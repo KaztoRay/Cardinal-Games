@@ -5,7 +5,12 @@ import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
 
-//서버와의 연결과 각 인터페이스를 관리하는 클래스.
+/**
+ * Cardinal Games - 온라인 오목 게임 클라이언트
+ * 서버와의 연결과 각 인터페이스를 관리하는 클래스.
+ * @version 1.0
+ * @since 2023.09
+ */
 public class Client {
 
     private String id = "";
@@ -41,7 +46,25 @@ public class Client {
         try {
             // 서버에 연결
 
-            client.mySocket = new Socket("localhost", 1257);
+            // 서버 주소 설정 (기본: localhost:1257)
+            String serverHost = System.getProperty("server.host", "localhost");
+            int serverPort = Integer.parseInt(System.getProperty("server.port", "1257"));
+            
+            // 서버 연결 재시도 (최대 3회)
+            int maxRetries = 3;
+            for (int retry = 1; retry <= maxRetries; retry++) {
+                try {
+                    client.mySocket = new Socket(serverHost, serverPort);
+                    break; // 연결 성공
+                } catch (java.net.ConnectException e) {
+                    if (retry < maxRetries) {
+                        System.out.println("[Client] 서버 연결 실패, " + (maxRetries - retry) + "회 재시도...");
+                        Thread.sleep(2000); // 2초 대기 후 재시도
+                    } else {
+                        throw e; // 마지막 시도에서도 실패
+                    }
+                }
+            }
             System.out.println("[Client] 서버 연결 성공");
 
             client.os = client.mySocket.getOutputStream();
@@ -66,8 +89,12 @@ public class Client {
             msgListener.start(); // 스레드 시작
         } catch (SocketException e) {
             System.out.println("[Client] 서버 연결 오류 > " + e.toString());
+            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다.\n서버가 실행 중인지 확인해주세요.", "연결 실패", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         } catch (IOException e) {
             System.out.println("[Client] 입출력 오류 > " + e.toString());
+            JOptionPane.showMessageDialog(null, "서버 연결 중 오류가 발생했습니다.\n" + e.getMessage(), "연결 오류", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
 
     }
@@ -203,7 +230,7 @@ class MessageListener extends Thread {
                         client.sendMsg(chSIdTag + "//" + client.getId());
                     }
                 }
-                
+
                 /* id 찾기 */
 				if (m[0].equals(fidTag)) {
 					if (!m[1].equals("FAIL")) {
@@ -288,7 +315,7 @@ class MessageListener extends Thread {
                         viewInfo(m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10]);
                     }
                 }
-                
+
                 /* 회원정보 조회(이미지) */
 				else if (m[0].equals(viewImgTag)) {
 					if (m[1].equals("회원정보")) {
@@ -336,16 +363,16 @@ class MessageListener extends Thread {
                 else if (m[0].equals(eroomTag)) {
                     enterRoom(m[1]);
                 }
-                
+
                 else if (m[0].equals(addPImgTag)) {
 					imgStrV.add(m[1]); // m[1]은 플레이어의 imgString 벡터에 담는 작업
 				}
-				
+
 				else if (m[0].equals(setPImgTag)) {
-					viewPInfo(); // 이미지를 디코딩해서 imgByteV<ImageIcon>에 담음	
-					
+					viewPInfo(); // 이미지를 디코딩해서 imgByteV<ImageIcon>에 담음
+
 					if(imgByteV.size() == 1) {
-						
+
 						ImageIcon newIcon = new ImageIcon();
 						Image scaledImage = imgByteV.get(0).getImage().getScaledInstance(client.gf.pimgL.getWidth(),
 								client.gf.pimgL.getHeight(), Image.SCALE_SMOOTH);
@@ -353,12 +380,12 @@ class MessageListener extends Thread {
 						client.gf.pimgL.setIcon(newIcon);
 						// 닉네임도 표시
 						client.gf.pL1.setText(m[1]);
-						
+
 						@SuppressWarnings("unused")
 						String tmp = m[2];
 					}
 					else if (imgByteV.size() == 2) {
-						
+
 						ImageIcon newIcon = new ImageIcon();
 						Image scaledImage = imgByteV.get(0).getImage().getScaledInstance(client.gf.pimgL.getWidth(),
 								client.gf.pimgL.getHeight(), Image.SCALE_SMOOTH);
@@ -366,7 +393,7 @@ class MessageListener extends Thread {
 						client.gf.pimgL.setIcon(newIcon);
 						// 닉네임도 표시
 						client.gf.pL1.setText(m[1]);
-						
+
 						ImageIcon newIcon2 = new ImageIcon();
 						Image scaledImage2 = imgByteV.get(1).getImage().getScaledInstance(client.gf.pimgL2.getWidth(),
 								client.gf.pimgL2.getHeight(), Image.SCALE_SMOOTH);
@@ -395,28 +422,28 @@ class MessageListener extends Thread {
                 else if (m[0].equals(omokTag)) {
                     inputOmok(m[1], m[2], m[3]);
                 }
-                
+
                 else if (m[0].equals(omokBlackMsgTag)) {
                 	String[] omokBlack = m[1].split(":");
                 	omokSpectatorBlack(omokBlack);
                 }
-                
+
                 else if (m[0].equals(omokWhiteMsgTag)) {
                 	String[] omokWhite = m[1].split(":");
                 	omokSpectatorWhite(omokWhite);
                 }
-                
+
                 /* 관전자 돌 위치 */
                 else if (m[0].equals(spectatorXYTag)) {
                 	if (m[1].equals("") || m[1] != null) {
                 		String[] omokBlack = m[1].split(":");
                 		omokSpectatorBlack(omokBlack);
                 	}
-                	
+
                 	if (m[2].equals("") || m[2] != null) {
                 		String[] omokWhite = m[2].split(":");
                 		omokSpectatorWhite(omokWhite);
-                	}                	
+                	}
                 }
 
                 /* 패배 */
@@ -542,7 +569,7 @@ class MessageListener extends Thread {
             client.af.model.fireTableDataChanged();
         }
     }
-    
+
     /* 내 정보를 확인하는 메소드 */
 	void viewMyInfo(String _m1, String _encodedImage) { // _m1은 이름, 닉네임, 이메일
 		String uInfo[] = _m1.split(",");
@@ -660,7 +687,7 @@ class MessageListener extends Thread {
             System.out.println("[Client] 방 입장 실패");
             JOptionPane.showMessageDialog(null, "이미 2명이 찬 방이므로 입장할 수 없습니다", "방입장", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         clearChatInputField();
     }
 
@@ -696,14 +723,14 @@ class MessageListener extends Thread {
             } else if (userLength > 2) {
             	client.gf.userList.setListData(new String[] { user[0] }); // 첫 번째 값으로 userList 설정
                 client.gf.userList.setListData(new String[] { user[1] }); // 두 번째 값으로 userList2 설정
-                
+
                 for (int i = 2; i < userLength; i++) {
                 	client.gf.spectatorList.setListData(new String[] {user[i] });
                 }
             }
         }
     }
-    
+
 	/* 방 인원 목록을 출력하는 메소드 */
 	void roomObjv(String _m) {
 		if(_m.equals("FAIL")) {
@@ -781,7 +808,7 @@ class MessageListener extends Thread {
             JOptionPane.showMessageDialog(null, "관전자이므로 전적 반영을 하지 않습니다.", "전적반영", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     void cleanGF(String _msg) {
 		if(_msg.equals("0")) {
 			client.gf.pL1.setText("플레이어1");
@@ -816,20 +843,27 @@ class MessageListener extends Thread {
         }
         return resultList;
     }
-    
+
     /* 방을 나가면 채팅 초기화 */
     void clearChatInputField() {
         client.gf.chatInputField.setText("");
         client.gf.chatTextPane.setText("");  // 이 부분을 추가하여 채팅 기록 초기화
     }
-    
+
     void omokSpectatorBlack(String[] b) {
     	client.gf.bd = b;
     	client.gf.drawdol(client.gf.getGraphics(), true);
     }
-    
+
     void omokSpectatorWhite(String[] w) {
     	client.gf.wd = w;
     	client.gf.drawdol(client.gf.getGraphics(), true);
     }
-}
+}// 2023-09-17 - 대기실 접속자 목록 갱신 문제 수정
+// 2023-09-29 - 코드 점검 및 미세 수정 (2023-09-29)
+// 2023-10-16 - GameFrame 승리 판정 로직 주석
+// 2023-10-17 - 오목 판정 시 장목(6목 이상) 처리
+// 2023-11-09 - 방 목록에 현재 게임 상태 표시
+// 2023-11-19 - 게임 중 이모티콘 전송 기능
+// 2023-12-08 - 재대국 시 채팅 기록 초기화
+// 2023-12-28 - 코드 점검 및 미세 수정 (2023-12-28)

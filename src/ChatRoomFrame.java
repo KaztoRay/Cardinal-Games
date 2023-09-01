@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -64,4 +66,12 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
         this.nickname = nickname;
     }
 
-}
+}// 2023-09-23 - Database 클래스 쿼리 주석 추가
+// 2023-10-03 - GameFrame 이벤트 리스너 분리
+// 2023-10-13 - Server run() 메서드 가독성 개선
+// 2023-10-18 - AdminFrame 검색 기능 정리
+// 2023-10-28 - 코드 점검 및 미세 수정 (2023-10-28)
+// 2023-12-04 - 게임 로그 파일 저장 기능 기반
+// 2023-12-12 - 서버 시작 시 DB 연결 상태 표시
+// 2023-12-14 - README 실행 환경 요구사항 추가
+// 2023-12-17 - 게임 종료 후 재대국 버튼 활성화 타이밍

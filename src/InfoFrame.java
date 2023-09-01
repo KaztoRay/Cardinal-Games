@@ -51,7 +51,7 @@ public class InfoFrame extends JFrame {
 		nicknameL.setPreferredSize(new Dimension(40, 30));
 		emailL.setPreferredSize(new Dimension(40, 30));
 		addressL.setPreferredSize(new Dimension(40, 30));
-		
+
 		/* TextField 크기 작업 */
 		name.setPreferredSize(new Dimension(200, 30));
 		nickname.setPreferredSize(new Dimension(200, 30));
@@ -80,7 +80,7 @@ public class InfoFrame extends JFrame {
 
 		panel.add(emailL);
 		panel.add(email);
-		
+
 		panel.add(addressL);
 		panel.add(address);
 
@@ -109,4 +109,6 @@ public class InfoFrame extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	}
-}
+}// 2023-09-28 - 코드 점검 및 미세 수정 (2023-09-28)
+// 2023-10-22 - 프로필 이미지 null 체크 추가
+// 2023-10-27 - 코드 점검 및 미세 수정 (2023-10-27)

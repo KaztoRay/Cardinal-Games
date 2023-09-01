@@ -150,6 +150,16 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "정말 종료하시겠습니까?", "종료 확인", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    c.sendMsg("PEXIT//");
+                    System.exit(0);
+                }
+            }
+        });
     }
 
     /* Button 이벤트 리스너 */
@@ -235,4 +245,10 @@ public class MainFrame extends JFrame {
             }
         }
     }
-}
+}// 2023-09-14 - 방 생성 시 빈 제목 방지
+// 2023-10-12 - 관전자 퇴장 시 인원 수 동기화
+// 2023-11-07 - 이모티콘 다이얼로그 코드 정리
+// 2023-11-18 - 랭킹 정렬 기준 승률로 변경
+// 2023-11-29 - 코드 점검 및 미세 수정 (2023-11-29)
+// 2023-12-02 - 보드 화점 위치 미세 조정
+// 2023-12-16 - 불필요한 System.out.println 정리

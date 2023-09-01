@@ -29,4 +29,8 @@ public class RankingFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
     }
-}
+}// 2023-10-26 - 프로토콜 메시지 형식 문서화
+// 2023-10-29 - 코드 점검 및 미세 수정 (2023-10-29)
+// 2023-10-30 - 코드 점검 및 미세 수정 (2023-10-30)
+// 2023-11-06 - 채팅 스크롤 자동 하단 이동
+// 2023-11-26 - 에러 메시지 한글화 통일

@@ -38,17 +38,17 @@ public class LoginFrame extends JFrame {
     LoginFrame(Client _c) {
         c = _c;
 
-        setTitle("짱구의 오목 시간");
+        setTitle("Cardinal Games - 오목");
 
         // 배경 이미지 설정
-        backgroundIcon = new ImageIcon("/Users/jeongjun-yeong/Downloads/zzanggu.jpg");
+        backgroundIcon = null; // 배경 이미지 (리소스 폴더에서 로드)
 
         /* Panel 초기화 */
         basePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                if (backgroundIcon != null && backgroundIcon.getImage() != null) { g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this); } else { g.setColor(new Color(240, 230, 210)); g.fillRect(0, 0, getWidth(), getHeight()); }
             }
         };
 
@@ -236,4 +236,10 @@ public class LoginFrame extends JFrame {
         public void keyReleased(KeyEvent e) {
         }
     }
-}
+}// 2023-09-08 - 로그인 실패 시 텍스트 필드 초기화
+// 2023-09-18 - 로그인 기능 수동 테스트 완료
+// 2023-10-14 - 방 입장 실패 시 다이얼로그 중복 표시 수정
+// 2023-10-24 - 전적 업데이트 동시성 문제 보완
+// 2023-10-31 - 코드 점검 및 미세 수정 (2023-10-31)
+// 2023-11-13 - 프로필 이미지 크기 자동 조절
+// 2023-12-11 - 방 입장 시 플레이어 이미지 로딩 순서

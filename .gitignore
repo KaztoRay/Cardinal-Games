@@ -8,3 +8,5 @@ out/
 build/
 target/
 .DS_Store
+db.properties
+*.db

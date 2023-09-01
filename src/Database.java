@@ -18,19 +18,20 @@ public class Database {
     Connection con = null;
     Statement stmt = null;
     PreparedStatement pstmt = null;
-    String url = "jdbc:mysql://localhost/login?serverTimezone=Asia/Seoul";
-    String user = "root";
-    String passwd = "2558jun@";
+    DBConfig dbConfig = new DBConfig();
 
     Database() { // Database 객체 생성 시 데이터베이스 서버와 연결한다.
         try { // 데이터베이스 연결은 try-catch문으로 예외를 잡아준다.
-            // 데이터베이스와 연결한다.
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, passwd);
+            if (dbConfig.isMySQL()) {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } else {
+                Class.forName("org.sqlite.JDBC");
+            }
+            con = DriverManager.getConnection(dbConfig.getUrl(), dbConfig.getUser(), dbConfig.getPassword());
             stmt = con.createStatement();
-            System.out.println("[Server] MySQL 서버 연동 성공"); // 데이터베이스 연결에 성공하면 성공을 콘솔로 알린다.
-        } catch (Exception e) { // 데이터베이스 연결에 예외가 발생했을 때 실패를 콘솔로 알린다.
-            System.out.println("[Server] MySQL 서버 연동 실패> " + e.toString());
+            System.out.println("[Server] DB 서버 연동 성공 (" + dbConfig.getDbType() + ")");
+        } catch (Exception e) {
+            System.out.println("[Server] DB 서버 연동 실패> " + e.toString());
         }
     }
 
@@ -44,8 +45,10 @@ public class Database {
 
         try {
             // id와 일치하는 비밀번호와 닉네임이 있는지 조회한다.
-            String checkingStr = "SELECT password, nickname FROM member WHERE id='" + id + "'";
-            ResultSet result = stmt.executeQuery(checkingStr);
+            String checkingStr = "SELECT password, nickname FROM member WHERE id=?";
+            pstmt = con.prepareStatement(checkingStr);
+            pstmt.setString(1, id);
+            ResultSet result = pstmt.executeQuery();
 
             int count = 0;
             while (result.next()) {
@@ -148,9 +151,18 @@ public class Database {
 
         try {
             // member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 승, 패는 초기값을 숫자 0으로 한다.
-            String insertStr = "INSERT INTO member VALUES('" + na + "', '" + nn + "', '" + id + "', '" + pw + "', '"
-                    + ad + "', '" + ge + "', '" + bi + "', '" + ph + "', '" + em + "', 0, 0)";
-            stmt.executeUpdate(insertStr);
+            String insertStr = "INSERT INTO member VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0)";
+            pstmt = con.prepareStatement(insertStr);
+            pstmt.setString(1, na);
+            pstmt.setString(2, nn);
+            pstmt.setString(3, id);
+            pstmt.setString(4, pw);
+            pstmt.setString(5, ad);
+            pstmt.setString(6, ge);
+            pstmt.setString(7, bi);
+            pstmt.setString(8, ph);
+            pstmt.setString(9, em);
+            pstmt.executeUpdate();
 
             flag = true; // 업데이트문이 정상적으로 수행되면 flag를 true로 초기화하고 성공을 콘솔로 알린다.
             System.out.println("[Server] 회원가입 성공");
@@ -333,8 +345,8 @@ public class Database {
 		}
 		return msg;
 	}
-	
-	/* 데이터 베이스에 저장된 img를 String 형태로 전송하는 메소드 */ 
+
+	/* 데이터 베이스에 저장된 img를 String 형태로 전송하는 메소드 */
 	String viewImg2(String _nickname) {
 		String nickname = _nickname;
 		String encodedImage = ""; // 인코딩이미지
@@ -348,7 +360,7 @@ public class Database {
 			if(result.next()) {
 				id = result.getString("id");
 			}
-			
+
 			String imgviewStr = "SELECT image_data FROM image_table WHERE id = ?";
 			pstmt = con.prepareStatement(imgviewStr);
 			pstmt.setString(1, id);
@@ -443,8 +455,11 @@ public class Database {
 
         try {
             // member 테이블에서 id에 해당하는 회원의 att(이름, 이메일, 비밀번호)를 val로 변경한다.
-            String changeStr = "UPDATE member SET " + att + "='" + val + "' WHERE id='" + id + "'";
-            stmt.executeUpdate(changeStr);
+            String changeStr = "UPDATE member SET " + att + "=? WHERE id=?";
+            pstmt = con.prepareStatement(changeStr);
+            pstmt.setString(1, val);
+            pstmt.setString(2, id);
+            pstmt.executeUpdate();
 
             flag = true; // 정상적으로 수행되면 flag를 true로 바꾸고 성공을 콘솔로 알린다.
             System.out.println("[Server] 회원정보 변경 성공");
@@ -489,8 +504,10 @@ public class Database {
 
         try {
             // member 테이블에서 nick이라는 닉네임을 가진 회원의 승, 패를 조회한다.
-            String searchStr = "SELECT win, lose FROM member WHERE nickname='" + nick + "'";
-            ResultSet result = stmt.executeQuery(searchStr);
+            String searchStr = "SELECT win, lose FROM member WHERE nickname=?";
+            pstmt = con.prepareStatement(searchStr);
+            pstmt.setString(1, nick);
+            ResultSet result = pstmt.executeQuery();
 
             int count = 0;
             while (result.next()) {
@@ -516,8 +533,10 @@ public class Database {
 
         try {
             // member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
-            String searchStr = "SELECT win FROM member WHERE nickname='" + nick + "'";
-            ResultSet result = stmt.executeQuery(searchStr);
+            String searchStr = "SELECT win FROM member WHERE nickname=?";
+            pstmt = con.prepareStatement(searchStr);
+            pstmt.setString(1, nick);
+            ResultSet result = pstmt.executeQuery();
 
             int count = 0;
             while (result.next()) {
@@ -528,8 +547,11 @@ public class Database {
             num++; // 승리 횟수를 올림
 
             // member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 num으로 업데이트한다.
-            String changeStr = "UPDATE member SET win=" + num + " WHERE nickname='" + nick + "'";
-            stmt.executeUpdate(changeStr);
+            String changeStr = "UPDATE member SET win=? WHERE nickname=?";
+            pstmt = con.prepareStatement(changeStr);
+            pstmt.setInt(1, num);
+            pstmt.setString(2, nick);
+            pstmt.executeUpdate();
             flag = true; // 조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
             System.out.println("[Server] 전적 업데이트 성공");
         } catch (Exception e) { // 조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
@@ -550,8 +572,10 @@ public class Database {
 
         try {
             // member 테이블에서 nick이라는 닉네임을 가진 회원의 패배 횟수를 조회한다.
-            String searchStr = "SELECT lose FROM member WHERE nickname='" + nick + "'";
-            ResultSet result = stmt.executeQuery(searchStr);
+            String searchStr = "SELECT lose FROM member WHERE nickname=?";
+            pstmt = con.prepareStatement(searchStr);
+            pstmt.setString(1, nick);
+            ResultSet result = pstmt.executeQuery();
 
             int count = 0;
             while (result.next()) {
@@ -562,8 +586,11 @@ public class Database {
             num++; // 패배 횟수를 올림
 
             // member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 num으로 업데이트한다.
-            String changeStr = "UPDATE member SET lose=" + num + " WHERE nickname='" + nick + "'";
-            stmt.executeUpdate(changeStr);
+            String changeStr = "UPDATE member SET lose=? WHERE nickname=?";
+            pstmt = con.prepareStatement(changeStr);
+            pstmt.setInt(1, num);
+            pstmt.setString(2, nick);
+            pstmt.executeUpdate();
             flag = true; // 조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
             System.out.println("[Server] 전적 업데이트 성공");
         } catch (Exception e) { // 조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
@@ -610,23 +637,32 @@ public class Database {
         }
         return user;
     }
-    
+
     ArrayList<String> searchUser(String su) {
     	ArrayList<String> searchUsers = new ArrayList();
-    	
+
     	try {
-    		String searchUserStr = "SELECT id FROM member WHERE id LIKE '" + su + "%'";
-    		ResultSet rs = stmt.executeQuery(searchUserStr);
-    		
+    		String searchUserStr = "SELECT id FROM member WHERE id LIKE ?";
+    		pstmt = con.prepareStatement(searchUserStr);
+    		pstmt.setString(1, su + "%");
+    		ResultSet rs = pstmt.executeQuery();
+
     		while(rs.next()) {
     			searchUsers.add(rs.getString("id"));
     		}
-    		
+
     		System.out.println("[Client] 유저 검색 성공");
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	
+
     	return searchUsers;
     }
 }
+// 2023-10-11 - 로비 채팅 입장/퇴장 알림
+// 2023-10-21 - 서버 콘솔에 방 생성/삭제 로그 추가
+// 2023-11-11 - 관리자 회원 삭제 시 확인 다이얼로그
+// 2023-11-12 - InfoFrame 레이아웃 개선
+// 2023-11-16 - 서버 비정상 종료 시 클라이언트 알림
+// 2023-11-30 - 코드 점검 및 미세 수정 (2023-11-30)
+// 2023-12-26 - 최종 프로젝트 보고서용 주석 정리

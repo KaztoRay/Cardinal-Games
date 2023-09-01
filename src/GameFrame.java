@@ -39,17 +39,35 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;  // java.util 패키지의 List를 명시적으로 import
+import javax.swing.Timer;
+import java.awt.Font;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 
 public class GameFrame extends JFrame {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
-    
+
     boolean isSpectator = false; // 관전자 여부
     boolean gameEnd = false; // 게임 종료 여부
     boolean start = false;
-    
+
+    // 게임 타이머
+    int blackTimeLeft = 600; // 10분 (초)
+    int whiteTimeLeft = 600;
+    boolean isBlackTurn = true;
+    Timer gameTimer;
+    JLabel timerLabel = new JLabel("⏱ 10:00 / 10:00");
+
+    // 마지막 돌 위치 표시
+    int lastX = -1, lastY = -1;
+    int moveCount = 0;
+    java.util.List<String> gameLog = new java.util.ArrayList<>(); // 기보 기록
+
     JTextPane chatTextPane = new JTextPane();
     JTextField chatInputField;
 
@@ -155,7 +173,7 @@ public class GameFrame extends JFrame {
     JPanel basePanel = new JPanel(new BorderLayout());
     JPanel centerPanel = new JPanel();
     JPanel eastPanel = new JPanel();
-    
+
     /* List */
     JList<String> userList = new JList<String>();
 
@@ -170,13 +188,14 @@ public class GameFrame extends JFrame {
     JLabel enableL = new JLabel();
     JLabel pimgL = new JLabel();
     JLabel pimgL2 = new JLabel();
-    
+
     Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 
     /* Button */
     JButton searchBtn = new JButton("전적검색");
     JButton loseBtn = new JButton("기권하기");
     JButton exitBtn = new JButton("나가기");
+    JButton rematchBtn = new JButton("재대국");
     JButton sendButton = new JButton("보내기");
 
     JButton emojiButton = new JButton("이모티콘 선택");
@@ -191,7 +210,7 @@ public class GameFrame extends JFrame {
     boolean enable = false; // 돌을 둘 수 있는지 여부
     String[] bd = new String[0];
     String[] wd = new String[0];
-    
+
     Client c = null;
 
     final String searchTag = "SEARCH"; // 전적 조회 기능 태그
@@ -209,51 +228,51 @@ public class GameFrame extends JFrame {
     GameFrame(Client _c) {
         c = _c;
 
-        icon = new ImageIcon("/Users/jeongjun-yeong/Downloads/background.jpg");
-    
-        // JTextPane 초기화      
+        icon = null; // 배경 이미지는 선택 사항
+
+        // JTextPane 초기화
         chatTextPane = new JTextPane() {
             public void paintComponent(Graphics g) {
-                g.drawImage(icon.getImage(), 0, 0, null);
+                if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
                 setOpaque(false);
                 super.paintComponent(g);
             }
         };
-        
+
         chatTextPane.setEditable(false);
         chatTextPane.setBackground(Color.cyan);
         chatTextPane.setContentType("text/html"); // HTML을 지원하도록 설정
-        
+
         JScrollPane chatScrollPane1 = new JScrollPane(chatTextPane);
         chatScrollPane1.setPreferredSize(new Dimension(235, 100));
 
         // 스크롤을 항상 아래로 이동시키는 코드
         chatScrollPane1.getVerticalScrollBar().setValue(chatScrollPane1.getVerticalScrollBar().getMaximum());
-        
+
         chatInputField = new JTextField() {
             public void paintComponent(Graphics g) {
-                g.drawImage(icon.getImage(), 0, 0, null);
+                if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
                 setOpaque(false);
                 super.paintComponent(g);
             }
         };
         chatInputField.setBackground(Color.cyan);
-        
+
         // JTextField 초기화
         chatInputField = new JTextField();
         chatInputField.setPreferredSize(new Dimension(235, 30));
-        
+
         // 관전자 리스트 크기 및 위치 설정
         spectatorList.setPreferredSize(new Dimension(120, 50));
         spectatorListL.setPreferredSize(new Dimension(105, 20));
         spectatorListL.setHorizontalAlignment(JLabel.CENTER);
-        
+
         JScrollPane spectatorScrollPanel = new JScrollPane(spectatorList);
         spectatorScrollPanel.setPreferredSize(new Dimension(235, 50));
 
         /* List 크기 작업 */
         userList.setPreferredSize(new Dimension(120, 50));
-        
+
         /* Label 크기 작업 */
         pL1.setPreferredSize(new Dimension(45, 20));
 		pL1.setHorizontalAlignment(JLabel.LEFT);
@@ -270,8 +289,9 @@ public class GameFrame extends JFrame {
         enableL.setPreferredSize(new Dimension(235, 45));
         enableL.setHorizontalAlignment(JLabel.CENTER);
         enableL.setForeground(Color.RED);
+    JLabel moveCountLabel = new JLabel("수순: 0");
         la3.setPreferredSize(new Dimension(250, 25));
-        
+
         /* Button 크기 작업 */
         searchBtn.setPreferredSize(new Dimension(235, 30));
         loseBtn.setPreferredSize(new Dimension(235, 30));
@@ -288,7 +308,7 @@ public class GameFrame extends JFrame {
         eastPanel.setLayout(new FlowLayout());
 
         centerPanel.setBackground(new Color(206, 167, 61));
- 
+
         basePanel.add(centerPanel, BorderLayout.CENTER);
         basePanel.add(eastPanel, BorderLayout.EAST);
 
@@ -298,11 +318,50 @@ public class GameFrame extends JFrame {
         eastPanel.add(pimgL2);
         eastPanel.add(userListL);
         eastPanel.add(spectatorListL);
-        eastPanel.add(userList);       
+        eastPanel.add(userList);
         eastPanel.add(spectatorList);
         eastPanel.add(la2);
         eastPanel.add(searchBtn);
         eastPanel.add(enableL);
+
+        // 타이머 라벨
+        timerLabel.setPreferredSize(new Dimension(235, 25));
+        timerLabel.setHorizontalAlignment(JLabel.CENTER);
+        timerLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+        eastPanel.add(timerLabel);
+        moveCountLabel.setPreferredSize(new Dimension(235, 20));
+        moveCountLabel.setHorizontalAlignment(JLabel.CENTER);
+        eastPanel.add(moveCountLabel);
+
+        // 게임 타이머 초기화
+        gameTimer = new Timer(1000, e -> {
+            if (enable && !gameEnd) { // 내 턴일 때만 시간 감소
+                if (dc.equals(blackTag)) {
+                    blackTimeLeft--;
+                    if (blackTimeLeft <= 0) {
+                        gameTimer.stop();
+                        c.sendMsg(loseTag + "//"); // 시간 초과 패배
+                        JOptionPane.showMessageDialog(null, "시간 초과! 패배하였습니다.", "시간 초과", JOptionPane.WARNING_MESSAGE);
+                        gameEnd = true;
+                        remove();
+                        dispose();
+                        c.mf.setVisible(true);
+                    }
+                } else {
+                    whiteTimeLeft--;
+                    if (whiteTimeLeft <= 0) {
+                        gameTimer.stop();
+                        c.sendMsg(loseTag + "//");
+                        JOptionPane.showMessageDialog(null, "시간 초과! 패배하였습니다.", "시간 초과", JOptionPane.WARNING_MESSAGE);
+                        gameEnd = true;
+                        remove();
+                        dispose();
+                        c.mf.setVisible(true);
+                    }
+                }
+            }
+            updateTimerLabel();
+        });
         eastPanel.add(la3);
         eastPanel.add(chatScrollPane1, BorderLayout.CENTER);
         eastPanel.add(chatInputField, BorderLayout.SOUTH);
@@ -310,9 +369,13 @@ public class GameFrame extends JFrame {
         eastPanel.add(emojiButton); // 이모티콘 선택 버튼 추가
         eastPanel.add(loseBtn);
         eastPanel.add(exitBtn);
-        
+        rematchBtn.setPreferredSize(new Dimension(235, 30));
+        rematchBtn.setEnabled(false); // 게임 종료 후에만 활성화
+        eastPanel.add(rematchBtn);
+
         /* Button 이벤트 리스너 추가 */
         ButtonListener bl = new ButtonListener();
+        rematchBtn.addActionListener(bl);
         loseBtn.addActionListener(bl);
         searchBtn.addActionListener(bl);
         exitBtn.addActionListener(bl);
@@ -355,7 +418,7 @@ public class GameFrame extends JFrame {
             }
 
         });
-        
+
         /* Mouse 이벤트 추가 */
 		spectatorList.addMouseListener(new MouseListener() {
 			@Override
@@ -384,21 +447,42 @@ public class GameFrame extends JFrame {
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        
+
     }
 
     @Override
     public void paint(Graphics g) { // panel에 그리기 작업
         super.paintComponents(g);
-        g.setColor(Color.BLACK);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(1.0f));
 
         for (int i = 1; i <= 20; i++) {
-        	 g.drawLine(35, i * 35 + 20, 35 * 20, i * 35 + 20); // 가로 줄 그리기
-        	 g.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
+        	 g2d.drawLine(35, i * 35 + 20, 35 * 20, i * 35 + 20); // 가로 줄 그리기
+        	 g2d.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
         }
 
-        drawdol(g); // 돌 그리기
+        // 좌표 표시
+        g2d.setFont(new Font("Dialog", Font.PLAIN, 10));
+        g2d.setColor(new Color(100, 60, 20));
+        for (int i = 1; i <= 19; i++) {
+            g2d.drawString(String.valueOf(i), i * 35 - 3, 50); // 상단 숫자
+            g2d.drawString(String.valueOf((char)('A' + i - 1)), 15, i * 35 + 24); // 좌측 알파벳
+        }
+        g2d.setColor(Color.BLACK);
         
+        // 화점 (star points) 그리기
+        int[] starPoints = {4, 10, 16};
+        for (int x : starPoints) {
+            for (int y : starPoints) {
+                g2d.fillOval(x * 35 - 3, y * 35 + 17, 7, 7);
+            }
+        }
+
+        drawdol(g2d); // 돌 그리기
+
         if (isSpectator) {
         	c.sendMsg(spectatorXYTag + "//");
             drawdol(g, true); // 관전자인 경우에만 돌 그리기
@@ -406,27 +490,46 @@ public class GameFrame extends JFrame {
     }
 
     void drawdol(Graphics g) { // 돌 그리기 작업
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     	for (int i = 0; i < 20; i++) {
     		for (int j = 0; j < 20; j++) {
+    			int cx = (i + 1) * 35 - 12;
+    			int cy = (j) * 35 + 37;
     			if (omok[j][i] == 1) { // 1일 때 검정 돌
-    				g.setColor(Color.BLACK);
-    				g.fillOval((i + 1) * 35 - 12, (j) * 35 + 37, 30, 30);
+    				g2d.setColor(Color.BLACK);
+    				g2d.fillOval(cx, cy, 30, 30);
+    				g2d.setColor(new Color(60, 60, 60));
+    				g2d.fillOval(cx + 3, cy + 3, 8, 8); // 하이라이트
 	            } else if (omok[j][i] == 2) { // 2일 때 흰 돌
-	            	g.setColor(Color.WHITE);
-	                g.fillOval((i + 1) * 35 - 12, (j) * 35 + 37, 30, 30);
+	            	g2d.setColor(Color.WHITE);
+	                g2d.fillOval(cx, cy, 30, 30);
+	                g2d.setColor(Color.BLACK);
+	                g2d.drawOval(cx, cy, 30, 30); // 테두리
+	                g2d.setColor(new Color(230, 230, 230));
+	                g2d.fillOval(cx + 3, cy + 3, 8, 8); // 하이라이트
 	            }
     		}
     	}
+    	// 마지막 돌 위치 표시
+    	if (lastX >= 0 && lastY >= 0) {
+    	    int cx = (lastX + 1) * 35 - 12;
+    	    int cy = lastY * 35 + 37;
+    	    g2d.setColor(Color.RED);
+    	    g2d.setStroke(new BasicStroke(2.0f));
+    	    g2d.drawRect(cx + 10, cy + 10, 10, 10);
+    	    g2d.setStroke(new BasicStroke(1.0f));
+    	}
     }
-    
+
     void drawdol(Graphics g, boolean isSpectator) {
     	int[] blackDol = new int[bd.length * 2 + 2];
     	int[] whiteDol = new int[wd.length * 2 + 2];
-    	
+
     	for (int i = 0; i < bd.length; i++) {
     	    System.out.println("bd[" + i + "]: " + bd[i]);
     	}
-    	
+
     	// bd 배열의 값들을 blackDol 배열에 복사
     	for (int i = 0; i < bd.length; i++) {
     	    String[] parts = bd[i].split("@@");
@@ -440,7 +543,7 @@ public class GameFrame extends JFrame {
     	    whiteDol[i * 2] = Integer.parseInt(parts[0]); // 첫 번째 값
     	    whiteDol[i * 2 + 1] = Integer.parseInt(parts[1]); // 두 번째 값
     	}
-    	
+
     	for (int i = 0; i < blackDol.length; i += 2) {
             int x = blackDol[i];
             int y = blackDol[i + 1];
@@ -477,7 +580,7 @@ public class GameFrame extends JFrame {
                 c.sendMsg(msg);
                 chatInputField.setText("");
             }
-            
+
             /* 전적검색 버튼 이벤트 */
             if (b.getText().equals("전적검색")) {
                 if (selUser != null) { // selUser가 null이 아니면 서버에 "태그//닉네임" 형태의 메시지를 전송
@@ -499,7 +602,31 @@ public class GameFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, "게임 플레이어만 기권할 수 있습니다", "기권 실패", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
+
+            /* 재대국 버튼 이벤트 */
+            else if (b.getText().equals("재대국")) {
+                remove(); // 보드 초기화
+                gameEnd = false;
+                lastX = -1;
+                lastY = -1;
+                moveCount = 0;
+                resetTimer();
+                startTimer();
+                // 흑백 교대
+                if (dc.equals(blackTag)) {
+                    dc = whiteTag;
+                    enable = false;
+                    enableL.setText("상대가 두기를 기다리는 중...");
+                } else {
+                    dc = blackTag;
+                    enable = true;
+                    enableL.setText("본인 차례입니다.");
+                }
+                rematchBtn.setEnabled(false);
+                repaint();
+                JOptionPane.showMessageDialog(null, "재대국을 시작합니다!", "재대국", JOptionPane.INFORMATION_MESSAGE);
+            }
+
             /* 나가기 버튼 이벤트 */
             else if (b.getText().equals("나가기")) {
             	if(!isSpectator) {
@@ -517,7 +644,7 @@ public class GameFrame extends JFrame {
             }
         }
     }
-    
+
     // chatInputField에 대한 ActionListener 추가
     class ChatInputFieldListener implements ActionListener {
         @Override
@@ -554,6 +681,11 @@ public class GameFrame extends JFrame {
                 return; // 다른 돌이 있으면 return
 
             System.out.println("[Client] 돌을 (" + x + ", " + y + ")에 두었습니다"); // 돌을 둔 위치를 알림
+            lastX = x;
+            lastY = y;
+            moveCount++;
+            moveCountLabel.setText("수순: " + moveCount);
+            gameLog.add(moveCount + ". " + dc + " (" + (char)('A'+x) + "," + (y+1) + ")");
 
             if (dc.equals(blackTag)) { // 검정색 태그면 1
                 omok[y][x] = 1;
@@ -564,7 +696,7 @@ public class GameFrame extends JFrame {
                 col = 2;
                 c.sendMsg(omokWhiteMsgTag + "//" + x + "//" + y + "//");
             }
-            
+
             // 만약 플레이어가 돌을 두었다면 메시지를 서버에 전송
             if (!isSpectator) {
             	String msg = ("omokMsgTag//" + x + "@@" + y);
@@ -633,14 +765,14 @@ public class GameFrame extends JFrame {
     int count(Point p, int _x, int _y, int c) {
         int i = 0;
         // omok[p.y+(i+1)*_y][p.x+(i+1)*_x]==c가 true면 i가 무한대로 증가한다.
-        for (i = 0; omok[p.y + (i + 1) * _y][p.x + (i + 1) * _x] == c; i++)
+        for (i = 0; p.y + (i + 1) * _y >= 0 && p.y + (i + 1) * _y < 20 && p.x + (i + 1) * _x >= 0 && p.x + (i + 1) * _x < 20 && omok[p.y + (i + 1) * _y][p.x + (i + 1) * _x] == c; i++)
             ;
         return i;
     }
-    
+
     // client.cf.appendMsg 메소드 내에서도 SwingUtilities.invokeLater 사용
     public void appendMsg(String msg, String owner) {
-        SwingUtilities.invokeLater(() -> {       	
+        SwingUtilities.invokeLater(() -> {
             if (owner.equals(c.gf.getNickname())) {
             	appendRightAligned("나", Color.BLACK);
             	appendRightAligned(msg + "\n", Color.BLUE);
@@ -650,7 +782,7 @@ public class GameFrame extends JFrame {
             }
         });
     }
-    
+
     // 채팅을 받아서 메세지로 붙여보내는 메소드
     public void appendMsg2(String msg) {
         SwingUtilities.invokeLater(() -> {
@@ -669,7 +801,7 @@ public class GameFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             HTMLDocument doc = (HTMLDocument) chatTextPane.getStyledDocument();
             Element root = doc.getDefaultRootElement();
-            
+
             // 스타일 추가
             SimpleAttributeSet style = new SimpleAttributeSet();
             StyleConstants.setForeground(style, textColor);
@@ -687,7 +819,7 @@ public class GameFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             HTMLDocument doc = (HTMLDocument) chatTextPane.getStyledDocument();
             Element root = doc.getDefaultRootElement();
-            
+
             // 스타일 추가
             SimpleAttributeSet style = new SimpleAttributeSet();
             StyleConstants.setForeground(style, textColor);
@@ -709,4 +841,35 @@ public class GameFrame extends JFrame {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-}
+
+    // 타이머 시작
+    public void startTimer() {
+        if (gameTimer != null && !gameTimer.isRunning()) {
+            gameTimer.start();
+        }
+    }
+
+    // 타이머 정지
+    public void stopTimer() {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+    }
+
+    // 타이머 라벨 업데이트
+    private void updateTimerLabel() {
+        String blackTime = String.format("%d:%02d", blackTimeLeft / 60, blackTimeLeft % 60);
+        String whiteTime = String.format("%d:%02d", whiteTimeLeft / 60, whiteTimeLeft % 60);
+        timerLabel.setText("⚫ " + blackTime + " / ⚪ " + whiteTime);
+    }
+
+    // 타이머 리셋
+    public void resetTimer() {
+        blackTimeLeft = 600;
+        whiteTimeLeft = 600;
+        updateTimerLabel();
+    }
+}// 2023-09-02 - 코드 들여쓰기 통일
+// 2023-09-19 - 비밀번호 필드 마스킹 처리 확인
+// 2023-09-21 - LoginFrame 레이아웃 미세 조정
+// 2023-10-08 - 중복 메시지 전송 코드 메서드화

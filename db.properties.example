@@ -1,0 +1,12 @@
+# Cardinal Games DB Configuration
+# MySQL 사용 시
+# db.type=mysql
+# db.url=jdbc:mysql://localhost/login?serverTimezone=Asia/Seoul
+# db.user=root
+# db.password=your_password
+
+# SQLite 사용 시 (기본값)
+db.type=sqlite
+db.url=jdbc:sqlite:omok.db
+db.user=
+db.password=
