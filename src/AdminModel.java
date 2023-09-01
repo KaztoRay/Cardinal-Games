@@ -42,3 +42,4 @@ public class AdminModel extends AbstractTableModel {
         return vec.get(col);
     }
 }
+// [2023-09-01 #3] 게임 로직 검증
