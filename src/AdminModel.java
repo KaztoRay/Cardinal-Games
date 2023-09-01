@@ -43,3 +43,4 @@ public class AdminModel extends AbstractTableModel {
     }
 }
 // [2023-09-01 #3] 게임 로직 검증
+// [2023-09-01 #6] 변수명 가독성 개선
