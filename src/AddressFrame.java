@@ -225,3 +225,4 @@ public class AddressFrame extends JFrame {
     }
 
 }
+// [2023-09-01 #1] 버튼 크기 조정
