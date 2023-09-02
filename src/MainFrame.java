@@ -253,3 +253,4 @@ public class MainFrame extends JFrame {
 // 2023-12-02 - 보드 화점 위치 미세 조정
 // 2023-12-16 - 불필요한 System.out.println 정리
 // [2023-09-01 #7] 설정 파일 로딩 캐시
+// [2023-09-02 #9] 로직 최적화
