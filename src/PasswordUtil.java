@@ -36,3 +36,4 @@ public class PasswordUtil {
         return inputHash.equals(storedHash);
     }
 }
+// [2023-09-02 #5] 로깅 추가
