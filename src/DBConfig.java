@@ -59,3 +59,4 @@ public class DBConfig {
     public boolean isSQLite() { return "sqlite".equalsIgnoreCase(dbType); }
     public boolean isMySQL() { return "mysql".equalsIgnoreCase(dbType); }
 }
+// [2023-09-02 #3] 주석 보완
