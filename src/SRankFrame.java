@@ -32,3 +32,4 @@ public class SRankFrame extends JFrame {
     }
 }
 // [2023-09-01 #8] 게임 로직 검증
+// [2023-09-03 #11] 접근제한자 수정
