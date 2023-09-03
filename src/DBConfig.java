@@ -60,3 +60,4 @@ public class DBConfig {
     public boolean isMySQL() { return "mysql".equalsIgnoreCase(dbType); }
 }
 // [2023-09-02 #3] 주석 보완
+// [2023-09-03 #14] 키보드 단축키 추가
