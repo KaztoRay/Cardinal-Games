@@ -209,12 +209,12 @@ public class GameFrame extends JFrame {
     GameFrame(Client _c) {
         c = _c;
 
-        icon = new ImageIcon("/Users/jeongjun-yeong/Downloads/background.jpg");
+        icon = null; // 배경 이미지는 선택 사항
     
         // JTextPane 초기화      
         chatTextPane = new JTextPane() {
             public void paintComponent(Graphics g) {
-                g.drawImage(icon.getImage(), 0, 0, null);
+                if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
                 setOpaque(false);
                 super.paintComponent(g);
             }
@@ -232,7 +232,7 @@ public class GameFrame extends JFrame {
         
         chatInputField = new JTextField() {
             public void paintComponent(Graphics g) {
-                g.drawImage(icon.getImage(), 0, 0, null);
+                if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
                 setOpaque(false);
                 super.paintComponent(g);
             }
@@ -633,7 +633,7 @@ public class GameFrame extends JFrame {
     int count(Point p, int _x, int _y, int c) {
         int i = 0;
         // omok[p.y+(i+1)*_y][p.x+(i+1)*_x]==c가 true면 i가 무한대로 증가한다.
-        for (i = 0; omok[p.y + (i + 1) * _y][p.x + (i + 1) * _x] == c; i++)
+        for (i = 0; p.y + (i + 1) * _y >= 0 && p.y + (i + 1) * _y < 20 && p.x + (i + 1) * _x >= 0 && p.x + (i + 1) * _x < 20 && omok[p.y + (i + 1) * _y][p.x + (i + 1) * _x] == c; i++)
             ;
         return i;
     }
