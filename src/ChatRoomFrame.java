@@ -75,3 +75,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // 2023-12-12 - 서버 시작 시 DB 연결 상태 표시
 // 2023-12-14 - README 실행 환경 요구사항 추가
 // 2023-12-17 - 게임 종료 후 재대국 버튼 활성화 타이밍
+// [2023-09-05 #1] 키보드 단축키 추가
