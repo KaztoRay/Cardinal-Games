@@ -47,3 +47,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-03 #1] 다이얼로그 메시지 수정
 // [2023-09-03 #9] GC 힌트 추가
 // [2023-09-03 #10] 미사용 import 제거
+// [2023-09-05 #5] 이모티콘 확장
