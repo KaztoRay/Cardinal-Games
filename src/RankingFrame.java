@@ -35,3 +35,4 @@ public class RankingFrame extends JFrame {
 // 2023-11-06 - 채팅 스크롤 자동 하단 이동
 // 2023-11-26 - 에러 메시지 한글화 통일
 // [2023-09-05 #6] 다이얼로그 메시지 수정
+// [2023-09-06 #3] SwingWorker 활용
