@@ -131,3 +131,4 @@ public class findIdFrame extends JFrame {
 // 2023-09-24 - 방 목록 새로고침 타이밍 수정
 // 2023-11-24 - DB 스키마 설명 주석 추가
 // [2023-09-02 #1] 예외 처리 강화
+// [2023-09-07 #1] 문자열 연결 StringBuilder 변환
