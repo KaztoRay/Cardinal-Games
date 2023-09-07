@@ -77,3 +77,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // 2023-12-17 - 게임 종료 후 재대국 버튼 활성화 타이밍
 // [2023-09-05 #1] 키보드 단축키 추가
 // [2023-09-05 #8] 파일 입출력 버퍼링
+// [2023-09-07 #9] 커넥션 풀 기반 코드
