@@ -78,3 +78,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-09-05 #1] 키보드 단축키 추가
 // [2023-09-05 #8] 파일 입출력 버퍼링
 // [2023-09-07 #9] 커넥션 풀 기반 코드
+// [2023-09-08 #4] 이벤트 리스너 분리
