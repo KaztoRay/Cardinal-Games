@@ -134,3 +134,4 @@ public class findIdFrame extends JFrame {
 // [2023-09-07 #1] 문자열 연결 StringBuilder 변환
 // [2023-09-07 #6] 테두리 스타일 변경
 // [2023-09-09 #7] 문자열 연결 StringBuilder 변환
+// [2023-09-11 #6] 인코딩 처리
