@@ -49,3 +49,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-03 #10] 미사용 import 제거
 // [2023-09-05 #5] 이모티콘 확장
 // [2023-09-11 #1] 커넥션 풀 기반 코드
+// [2023-09-11 #2] null 체크 추가
