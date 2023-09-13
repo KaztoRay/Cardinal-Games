@@ -82,3 +82,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-09-08 #9] 동기화 처리 개선
 // [2023-09-09 #2] 동기화 처리 개선
 // [2023-09-10 #7] 메서드 분리
+// [2023-09-13 #13] 키보드 단축키 추가
