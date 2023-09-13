@@ -51,3 +51,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-11 #1] 커넥션 풀 기반 코드
 // [2023-09-11 #2] null 체크 추가
 // [2023-09-13 #3] GC 힌트 추가
+// [2023-09-13 #7] 경계값 체크
