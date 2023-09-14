@@ -122,3 +122,4 @@ public class InfoFrame extends JFrame {
 // [2023-09-12 #7] 포커스 처리
 // [2023-09-13 #12] SwingWorker 활용
 // [2023-09-14 #7] 주석 보완
+// [2023-09-14 #15] 게임 로직 검증
