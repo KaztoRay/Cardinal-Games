@@ -53,3 +53,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-13 #3] GC 힌트 추가
 // [2023-09-13 #7] 경계값 체크
 // [2023-09-14 #4] 프로필 이미지 캐싱
+// [2023-09-14 #5] 버튼 크기 조정
