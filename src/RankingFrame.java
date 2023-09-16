@@ -37,3 +37,4 @@ public class RankingFrame extends JFrame {
 // [2023-09-05 #6] 다이얼로그 메시지 수정
 // [2023-09-06 #3] SwingWorker 활용
 // [2023-09-07 #11] 돌 배치 애니메이션 기반
+// [2023-09-16 #8] 미사용 import 제거
