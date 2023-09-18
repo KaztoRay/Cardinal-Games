@@ -57,3 +57,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-15 #9] 설정 파일 로딩 캐시
 // [2023-09-15 #14] 불필요한 객체 생성 제거
 // [2023-09-18 #3] GC 힌트 추가
+// [2023-09-18 #9] 재연결 로직 기반
