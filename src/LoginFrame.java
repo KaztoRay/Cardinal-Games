@@ -38,17 +38,17 @@ public class LoginFrame extends JFrame {
     LoginFrame(Client _c) {
         c = _c;
 
-        setTitle("짱구의 오목 시간");
+        setTitle("Cardinal Games - 오목");
 
         // 배경 이미지 설정
-        backgroundIcon = new ImageIcon("/Users/jeongjun-yeong/Downloads/zzanggu.jpg");
+        backgroundIcon = null; // 배경 이미지 (리소스 폴더에서 로드)
 
         /* Panel 초기화 */
         basePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this);
+                if (backgroundIcon != null && backgroundIcon.getImage() != null) { g.drawImage(backgroundIcon.getImage(), 0, 0, getWidth(), getHeight(), this); } else { g.setColor(new Color(240, 230, 210)); g.fillRect(0, 0, getWidth(), getHeight()); }
             }
         };
 
