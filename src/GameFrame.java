@@ -39,6 +39,12 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;  // java.util 패키지의 List를 명시적으로 import
+import javax.swing.Timer;
+import java.awt.Font;
+import java.awt.RenderingHints;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 
 public class GameFrame extends JFrame {
     /**
@@ -49,6 +55,17 @@ public class GameFrame extends JFrame {
     boolean isSpectator = false; // 관전자 여부
     boolean gameEnd = false; // 게임 종료 여부
     boolean start = false;
+    
+    // 게임 타이머
+    int blackTimeLeft = 600; // 10분 (초)
+    int whiteTimeLeft = 600;
+    boolean isBlackTurn = true;
+    Timer gameTimer;
+    JLabel timerLabel = new JLabel("⏱ 10:00 / 10:00");
+    
+    // 마지막 돌 위치 표시
+    int lastX = -1, lastY = -1;
+    int moveCount = 0;
     
     JTextPane chatTextPane = new JTextPane();
     JTextField chatInputField;
@@ -303,6 +320,42 @@ public class GameFrame extends JFrame {
         eastPanel.add(la2);
         eastPanel.add(searchBtn);
         eastPanel.add(enableL);
+        
+        // 타이머 라벨
+        timerLabel.setPreferredSize(new Dimension(235, 25));
+        timerLabel.setHorizontalAlignment(JLabel.CENTER);
+        timerLabel.setFont(new Font("Dialog", Font.BOLD, 14));
+        eastPanel.add(timerLabel);
+        
+        // 게임 타이머 초기화
+        gameTimer = new Timer(1000, e -> {
+            if (enable && !gameEnd) { // 내 턴일 때만 시간 감소
+                if (dc.equals(blackTag)) {
+                    blackTimeLeft--;
+                    if (blackTimeLeft <= 0) {
+                        gameTimer.stop();
+                        c.sendMsg(loseTag + "//"); // 시간 초과 패배
+                        JOptionPane.showMessageDialog(null, "시간 초과! 패배하였습니다.", "시간 초과", JOptionPane.WARNING_MESSAGE);
+                        gameEnd = true;
+                        remove();
+                        dispose();
+                        c.mf.setVisible(true);
+                    }
+                } else {
+                    whiteTimeLeft--;
+                    if (whiteTimeLeft <= 0) {
+                        gameTimer.stop();
+                        c.sendMsg(loseTag + "//");
+                        JOptionPane.showMessageDialog(null, "시간 초과! 패배하였습니다.", "시간 초과", JOptionPane.WARNING_MESSAGE);
+                        gameEnd = true;
+                        remove();
+                        dispose();
+                        c.mf.setVisible(true);
+                    }
+                }
+            }
+            updateTimerLabel();
+        });
         eastPanel.add(la3);
         eastPanel.add(chatScrollPane1, BorderLayout.CENTER);
         eastPanel.add(chatInputField, BorderLayout.SOUTH);
@@ -390,14 +443,26 @@ public class GameFrame extends JFrame {
     @Override
     public void paint(Graphics g) { // panel에 그리기 작업
         super.paintComponents(g);
-        g.setColor(Color.BLACK);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g2d.setColor(Color.BLACK);
+        g2d.setStroke(new BasicStroke(1.0f));
 
         for (int i = 1; i <= 20; i++) {
-        	 g.drawLine(35, i * 35 + 20, 35 * 20, i * 35 + 20); // 가로 줄 그리기
-        	 g.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
+        	 g2d.drawLine(35, i * 35 + 20, 35 * 20, i * 35 + 20); // 가로 줄 그리기
+        	 g2d.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
+        }
+        
+        // 화점 (star points) 그리기
+        int[] starPoints = {4, 10, 16};
+        for (int x : starPoints) {
+            for (int y : starPoints) {
+                g2d.fillOval(x * 35 - 3, y * 35 + 17, 7, 7);
+            }
         }
 
-        drawdol(g); // 돌 그리기
+        drawdol(g2d); // 돌 그리기
         
         if (isSpectator) {
         	c.sendMsg(spectatorXYTag + "//");
@@ -406,16 +471,35 @@ public class GameFrame extends JFrame {
     }
 
     void drawdol(Graphics g) { // 돌 그리기 작업
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     	for (int i = 0; i < 20; i++) {
     		for (int j = 0; j < 20; j++) {
+    			int cx = (i + 1) * 35 - 12;
+    			int cy = (j) * 35 + 37;
     			if (omok[j][i] == 1) { // 1일 때 검정 돌
-    				g.setColor(Color.BLACK);
-    				g.fillOval((i + 1) * 35 - 12, (j) * 35 + 37, 30, 30);
+    				g2d.setColor(Color.BLACK);
+    				g2d.fillOval(cx, cy, 30, 30);
+    				g2d.setColor(new Color(60, 60, 60));
+    				g2d.fillOval(cx + 3, cy + 3, 8, 8); // 하이라이트
 	            } else if (omok[j][i] == 2) { // 2일 때 흰 돌
-	            	g.setColor(Color.WHITE);
-	                g.fillOval((i + 1) * 35 - 12, (j) * 35 + 37, 30, 30);
+	            	g2d.setColor(Color.WHITE);
+	                g2d.fillOval(cx, cy, 30, 30);
+	                g2d.setColor(Color.BLACK);
+	                g2d.drawOval(cx, cy, 30, 30); // 테두리
+	                g2d.setColor(new Color(230, 230, 230));
+	                g2d.fillOval(cx + 3, cy + 3, 8, 8); // 하이라이트
 	            }
     		}
+    	}
+    	// 마지막 돌 위치 표시
+    	if (lastX >= 0 && lastY >= 0) {
+    	    int cx = (lastX + 1) * 35 - 12;
+    	    int cy = lastY * 35 + 37;
+    	    g2d.setColor(Color.RED);
+    	    g2d.setStroke(new BasicStroke(2.0f));
+    	    g2d.drawRect(cx + 10, cy + 10, 10, 10);
+    	    g2d.setStroke(new BasicStroke(1.0f));
     	}
     }
     
@@ -554,6 +638,9 @@ public class GameFrame extends JFrame {
                 return; // 다른 돌이 있으면 return
 
             System.out.println("[Client] 돌을 (" + x + ", " + y + ")에 두었습니다"); // 돌을 둔 위치를 알림
+            lastX = x;
+            lastY = y;
+            moveCount++;
 
             if (dc.equals(blackTag)) { // 검정색 태그면 1
                 omok[y][x] = 1;
@@ -708,5 +795,33 @@ public class GameFrame extends JFrame {
     // 닉네임 설정하기
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+    
+    // 타이머 시작
+    public void startTimer() {
+        if (gameTimer != null && !gameTimer.isRunning()) {
+            gameTimer.start();
+        }
+    }
+    
+    // 타이머 정지
+    public void stopTimer() {
+        if (gameTimer != null) {
+            gameTimer.stop();
+        }
+    }
+    
+    // 타이머 라벨 업데이트
+    private void updateTimerLabel() {
+        String blackTime = String.format("%d:%02d", blackTimeLeft / 60, blackTimeLeft % 60);
+        String whiteTime = String.format("%d:%02d", whiteTimeLeft / 60, whiteTimeLeft % 60);
+        timerLabel.setText("⚫ " + blackTime + " / ⚪ " + whiteTime);
+    }
+    
+    // 타이머 리셋
+    public void resetTimer() {
+        blackTimeLeft = 600;
+        whiteTimeLeft = 600;
+        updateTimerLabel();
     }
 }
