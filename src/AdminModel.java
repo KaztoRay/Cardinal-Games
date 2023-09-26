@@ -61,3 +61,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-22 #2] 문자열 연결 StringBuilder 변환
 // [2023-09-22 #9] 프로토콜 메시지 형식 정리
 // [2023-09-25 #4] 프로필 이미지 캐싱
+// [2023-09-26 #6] 로그 레벨 분류
