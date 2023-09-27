@@ -86,3 +86,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-09-15 #12] 경계값 체크
 // [2023-09-16 #5] 레이아웃 미세 조정
 // [2023-09-26 #8] 소켓 타임아웃 설정
+// [2023-09-27 #4] 입력값 검증 추가
