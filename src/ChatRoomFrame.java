@@ -90,3 +90,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-09-29 #14] 커넥션 풀 기반 코드
 // [2023-09-30 #3] SwingWorker 활용
 // [2023-10-01 #11] 컬렉션 초기 용량 설정
+// [2023-10-02 #2] 스레드 안정성 개선
