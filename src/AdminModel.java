@@ -65,3 +65,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-09-28 #11] SwingWorker 활용
 // [2023-09-29 #1] 코드 들여쓰기 통일
 // [2023-09-30 #7] 이벤트 리스너 분리
+// [2023-10-03 #8] 로직 최적화
