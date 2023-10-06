@@ -151,3 +151,4 @@ public class findIdFrame extends JFrame {
 // [2023-10-03 #6] 스크롤 자동 이동
 // [2023-10-03 #14] 에러 메시지 한글화
 // [2023-10-04 #4] 포커스 처리
+// [2023-10-06 #3] 문자열 연결 StringBuilder 변환
