@@ -268,3 +268,4 @@ public class LoginFrame extends JFrame {
 // [2023-10-02 #1] SwingWorker 활용
 // [2023-10-06 #1] 버퍼 크기 최적화
 // [2023-10-07 #2] GC 힌트 추가
+// [2023-10-08 #5] 이모티콘 확장
