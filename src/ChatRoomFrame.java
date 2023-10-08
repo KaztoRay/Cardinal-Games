@@ -94,3 +94,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-10-04 #5] 불필요한 객체 생성 제거
 // [2023-10-07 #3] 메모리 사용량 최적화
 // [2023-10-08 #1] 키보드 단축키 추가
+// [2023-10-08 #6] 리소스 해제 추가
