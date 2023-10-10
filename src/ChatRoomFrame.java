@@ -96,3 +96,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-10-08 #1] 키보드 단축키 추가
 // [2023-10-08 #6] 리소스 해제 추가
 // [2023-10-09 #9] 경계값 체크
+// [2023-10-10 #1] 재연결 로직 기반
