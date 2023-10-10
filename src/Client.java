@@ -41,7 +41,10 @@ public class Client {
         try {
             // 서버에 연결
 
-            client.mySocket = new Socket("localhost", 1257);
+            // 서버 주소 설정 (기본: localhost:1257)
+            String serverHost = System.getProperty("server.host", "localhost");
+            int serverPort = Integer.parseInt(System.getProperty("server.port", "1257"));
+            client.mySocket = new Socket(serverHost, serverPort);
             System.out.println("[Client] 서버 연결 성공");
 
             client.os = client.mySocket.getOutputStream();
@@ -66,8 +69,12 @@ public class Client {
             msgListener.start(); // 스레드 시작
         } catch (SocketException e) {
             System.out.println("[Client] 서버 연결 오류 > " + e.toString());
+            JOptionPane.showMessageDialog(null, "서버에 연결할 수 없습니다.\n서버가 실행 중인지 확인해주세요.", "연결 실패", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         } catch (IOException e) {
             System.out.println("[Client] 입출력 오류 > " + e.toString());
+            JOptionPane.showMessageDialog(null, "서버 연결 중 오류가 발생했습니다.\n" + e.getMessage(), "연결 오류", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
         }
 
     }
