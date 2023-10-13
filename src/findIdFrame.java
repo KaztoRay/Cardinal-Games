@@ -154,3 +154,4 @@ public class findIdFrame extends JFrame {
 // [2023-10-06 #3] 문자열 연결 StringBuilder 변환
 // [2023-10-08 #9] 승리 판정 엣지케이스 처리
 // [2023-10-09 #5] 변수명 가독성 개선
+// [2023-10-13 #11] EDT 스레드 안전성
