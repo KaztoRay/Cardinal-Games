@@ -194,6 +194,7 @@ public class GameFrame extends JFrame {
     JButton searchBtn = new JButton("전적검색");
     JButton loseBtn = new JButton("기권하기");
     JButton exitBtn = new JButton("나가기");
+    JButton rematchBtn = new JButton("재대국");
     JButton sendButton = new JButton("보내기");
 
     JButton emojiButton = new JButton("이모티콘 선택");
@@ -363,9 +364,13 @@ public class GameFrame extends JFrame {
         eastPanel.add(emojiButton); // 이모티콘 선택 버튼 추가
         eastPanel.add(loseBtn);
         eastPanel.add(exitBtn);
+        rematchBtn.setPreferredSize(new Dimension(235, 30));
+        rematchBtn.setEnabled(false); // 게임 종료 후에만 활성화
+        eastPanel.add(rematchBtn);
         
         /* Button 이벤트 리스너 추가 */
         ButtonListener bl = new ButtonListener();
+        rematchBtn.addActionListener(bl);
         loseBtn.addActionListener(bl);
         searchBtn.addActionListener(bl);
         exitBtn.addActionListener(bl);
@@ -582,6 +587,30 @@ public class GameFrame extends JFrame {
                 } else {
                     JOptionPane.showMessageDialog(null, "게임 플레이어만 기권할 수 있습니다", "기권 실패", JOptionPane.ERROR_MESSAGE);
                 }
+            }
+            
+            /* 재대국 버튼 이벤트 */
+            else if (b.getText().equals("재대국")) {
+                remove(); // 보드 초기화
+                gameEnd = false;
+                lastX = -1;
+                lastY = -1;
+                moveCount = 0;
+                resetTimer();
+                startTimer();
+                // 흑백 교대
+                if (dc.equals(blackTag)) {
+                    dc = whiteTag;
+                    enable = false;
+                    enableL.setText("상대가 두기를 기다리는 중...");
+                } else {
+                    dc = blackTag;
+                    enable = true;
+                    enableL.setText("본인 차례입니다.");
+                }
+                rematchBtn.setEnabled(false);
+                repaint();
+                JOptionPane.showMessageDialog(null, "재대국을 시작합니다!", "재대국", JOptionPane.INFORMATION_MESSAGE);
             }
             
             /* 나가기 버튼 이벤트 */
