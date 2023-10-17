@@ -70,3 +70,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-10-12 #13] 변수명 가독성 개선
 // [2023-10-15 #5] 포커스 처리
 // [2023-10-15 #7] 화점 위치 보정
+// [2023-10-17 #5] 패널 간격 조정
