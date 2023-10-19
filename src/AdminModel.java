@@ -71,3 +71,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-10-15 #5] 포커스 처리
 // [2023-10-15 #7] 화점 위치 보정
 // [2023-10-17 #5] 패널 간격 조정
+// [2023-10-19 #2] 좌표 계산 정밀도 개선
