@@ -21,8 +21,22 @@ public class Server {
 
         try {
             // 서버 소켓 준비
-            server.ss = new ServerSocket(1257);
-            System.out.println("[Server] 서버 소켓 준비 완료");
+            int port = Integer.parseInt(System.getProperty("server.port", "1257"));
+            server.ss = new ServerSocket(port);
+            System.out.println("[Server] 서버 소켓 준비 완료 (포트: " + port + ")");
+            System.out.println("[Server] 종료하려면 Ctrl+C를 누르세요.");
+            
+            // 종료 훅 등록
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                System.out.println("[Server] 서버를 종료합니다...");
+                try {
+                    if (server.ss != null && !server.ss.isClosed()) {
+                        server.ss.close();
+                    }
+                } catch (java.io.IOException e) {
+                    // 무시
+                }
+            }));
 
             // 클라이언트의 연결 요청을 상시 대기.
             while (true) {
