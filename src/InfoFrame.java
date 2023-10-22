@@ -138,3 +138,4 @@ public class InfoFrame extends JFrame {
 // [2023-10-15 #10] 포커스 처리
 // [2023-10-18 #11] 버퍼 크기 최적화
 // [2023-10-20 #1] EDT 스레드 안전성
+// [2023-10-22 #6] 문자열 연결 StringBuilder 변환
