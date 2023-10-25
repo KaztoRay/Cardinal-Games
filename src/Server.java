@@ -2,6 +2,8 @@ import java.net.*;
 import java.util.*;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 //클라이언트의 연결 요청 및 입출력을 상시 관리하는 클래스.
 public class Server {
@@ -131,6 +133,10 @@ class CCUser extends Thread {
 	final String fidTag = "FID"; // 아이디 찾기 태그
 	final String fpwTag = "FPW"; // 비밀번호 찾기 태그
 
+    static String timestamp() {
+        return "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
+    }
+    
     CCUser(Socket _s, Server _ss) {
         this.socket = _s;
         this.server = _ss;
