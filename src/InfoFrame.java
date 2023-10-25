@@ -140,3 +140,4 @@ public class InfoFrame extends JFrame {
 // [2023-10-20 #1] EDT 스레드 안전성
 // [2023-10-22 #6] 문자열 연결 StringBuilder 변환
 // [2023-10-24 #10] 테두리 스타일 변경
+// [2023-10-25 #4] 화점 위치 보정
