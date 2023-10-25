@@ -159,3 +159,4 @@ public class findIdFrame extends JFrame {
 // [2023-10-16 #4] EDT 스레드 안전성
 // [2023-10-18 #1] SwingWorker 활용
 // [2023-10-21 #5] 접근제한자 수정
+// [2023-10-25 #9] SwingWorker 활용
