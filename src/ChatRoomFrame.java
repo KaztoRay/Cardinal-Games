@@ -100,3 +100,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-10-17 #13] 재연결 로직 기반
 // [2023-10-19 #6] 소켓 타임아웃 설정
 // [2023-10-19 #8] 재연결 로직 기반
+// [2023-10-26 #1] 좌표 계산 정밀도 개선
