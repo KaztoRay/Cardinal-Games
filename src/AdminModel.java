@@ -76,3 +76,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-10-21 #1] UI 응답성 개선
 // [2023-10-23 #1] 로직 최적화
 // [2023-10-23 #10] 컬렉션 초기 용량 설정
+// [2023-10-27 #2] 버튼 크기 조정
