@@ -67,3 +67,4 @@ public class RankingFrame extends JFrame {
 // [2023-10-22 #5] EDT 스레드 안전성
 // [2023-10-24 #8] 로직 최적화
 // [2023-10-27 #11] 미사용 import 제거
+// [2023-10-28 #11] 인코딩 처리
