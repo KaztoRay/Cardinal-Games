@@ -288,6 +288,7 @@ public class GameFrame extends JFrame {
         enableL.setPreferredSize(new Dimension(235, 45));
         enableL.setHorizontalAlignment(JLabel.CENTER);
         enableL.setForeground(Color.RED);
+    JLabel moveCountLabel = new JLabel("수순: 0");
         la3.setPreferredSize(new Dimension(250, 25));
         
         /* Button 크기 작업 */
@@ -327,6 +328,9 @@ public class GameFrame extends JFrame {
         timerLabel.setHorizontalAlignment(JLabel.CENTER);
         timerLabel.setFont(new Font("Dialog", Font.BOLD, 14));
         eastPanel.add(timerLabel);
+        moveCountLabel.setPreferredSize(new Dimension(235, 20));
+        moveCountLabel.setHorizontalAlignment(JLabel.CENTER);
+        eastPanel.add(moveCountLabel);
         
         // 게임 타이머 초기화
         gameTimer = new Timer(1000, e -> {
@@ -670,6 +674,7 @@ public class GameFrame extends JFrame {
             lastX = x;
             lastY = y;
             moveCount++;
+            moveCountLabel.setText("수순: " + moveCount);
 
             if (dc.equals(blackTag)) { // 검정색 태그면 1
                 omok[y][x] = 1;
