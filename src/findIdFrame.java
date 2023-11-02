@@ -161,3 +161,4 @@ public class findIdFrame extends JFrame {
 // [2023-10-21 #5] 접근제한자 수정
 // [2023-10-25 #9] SwingWorker 활용
 // [2023-10-26 #13] 인코딩 처리
+// [2023-11-02 #4] 코드 들여쓰기 통일
