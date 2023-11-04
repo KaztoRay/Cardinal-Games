@@ -55,3 +55,4 @@ public class SRankFrame extends JFrame {
 // [2023-10-27 #1] 문자열 연결 StringBuilder 변환
 // [2023-10-30 #5] 색상 코드 정리
 // [2023-11-04 #4] 로깅 추가
+// [2023-11-04 #10] 버퍼 크기 최적화
