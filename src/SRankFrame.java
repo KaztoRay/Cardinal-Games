@@ -54,3 +54,4 @@ public class SRankFrame extends JFrame {
 // [2023-10-24 #1] 다이얼로그 메시지 수정
 // [2023-10-27 #1] 문자열 연결 StringBuilder 변환
 // [2023-10-30 #5] 색상 코드 정리
+// [2023-11-04 #4] 로깅 추가
