@@ -103,3 +103,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-10-26 #1] 좌표 계산 정밀도 개선
 // [2023-10-26 #8] 버튼 크기 조정
 // [2023-10-29 #10] 색상 코드 정리
+// [2023-11-05 #8] UI 응답성 개선
