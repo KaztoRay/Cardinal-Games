@@ -156,3 +156,4 @@ public class InfoFrame extends JFrame {
 // [2023-11-05 #7] 패널 간격 조정
 // [2023-11-06 #1] 경계값 체크
 // [2023-11-07 #2] SwingWorker 활용
+// [2023-11-08 #1] 경계값 체크
