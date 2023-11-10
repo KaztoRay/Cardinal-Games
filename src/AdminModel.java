@@ -83,3 +83,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-10-31 #4] 다이얼로그 메시지 수정
 // [2023-11-09 #1] 채팅 필터링 기반 코드
 // [2023-11-10 #2] 상수 정리
+// [2023-11-10 #5] UI 응답성 개선
