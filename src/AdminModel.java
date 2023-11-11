@@ -85,3 +85,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-10 #2] 상수 정리
 // [2023-11-10 #5] UI 응답성 개선
 // [2023-11-11 #4] 다이얼로그 메시지 수정
+// [2023-11-11 #7] 파일 입출력 버퍼링
