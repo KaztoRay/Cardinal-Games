@@ -76,3 +76,4 @@ public class RankingFrame extends JFrame {
 // [2023-11-07 #1] 포커스 처리
 // [2023-11-08 #3] null 체크 추가
 // [2023-11-12 #2] null 체크 추가
+// [2023-11-12 #12] 동기화 처리 개선
