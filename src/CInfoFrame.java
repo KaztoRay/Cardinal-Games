@@ -159,3 +159,4 @@ public class CInfoFrame extends JFrame {
 // [2023-11-07 #9] 상수 정리
 // [2023-11-13 #10] 화점 위치 보정
 // [2023-11-15 #4] 문자열 연결 StringBuilder 변환
+// [2023-11-16 #11] 타임아웃 설정
