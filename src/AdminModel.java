@@ -89,3 +89,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-11 #10] 레이아웃 미세 조정
 // [2023-11-13 #4] 메서드 분리
 // [2023-11-13 #8] 재연결 로직 기반
+// [2023-11-17 #3] 경계값 체크
