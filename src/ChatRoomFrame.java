@@ -107,3 +107,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-11-05 #11] 프로토콜 메시지 형식 정리
 // [2023-11-10 #9] 변수명 가독성 개선
 // [2023-11-18 #1] 접근제한자 수정
+// [2023-11-18 #2] 툴팁 추가
