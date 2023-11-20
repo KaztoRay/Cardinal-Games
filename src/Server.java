@@ -27,7 +27,7 @@ public class Server {
             server.ss = new ServerSocket(port);
             System.out.println("[Server] 서버 소켓 준비 완료 (포트: " + port + ")");
             System.out.println("[Server] 종료하려면 Ctrl+C를 누르세요.");
-            
+
             // 종료 훅 등록
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
                 System.out.println("[Server] 서버를 종료합니다...");
@@ -136,7 +136,7 @@ class CCUser extends Thread {
     static String timestamp() {
         return "[" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + "]";
     }
-    
+
     CCUser(Socket _s, Server _ss) {
         this.socket = _s;
         this.server = _ss;
@@ -219,7 +219,7 @@ class CCUser extends Thread {
                         dos.writeUTF(loginTag + "//FAIL");
                     }
                 }
-                
+
                 /* id 검색 */
 				else if (m[0].equals(fidTag)) {
 					String uid = db.findId(m[1], m[2]); // name과 nickname받아서 id를 검색함
@@ -376,20 +376,20 @@ class CCUser extends Thread {
                     sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송
                     sendRoom(roomUser()); // 방에 입장한 인원에 방 인원 목록을 전송
                     sendRoom(roomObjv());
-                    
-                    // 플레이어 수만큼 이미지Str 추출 
+
+                    // 플레이어 수만큼 이미지Str 추출
 					Vector<String> tmpVector = new Vector<>();
 					for(int i = 0; i < myRoom.player.size(); i++) { // 추출은 플레이어의 수만큼만 이루어져야함
 						tmpVector.add(db.viewImg2(myRoom.player.get(i).nickname));
 					}
-					
+
 					for(int i = 0; i < myRoom.ccu.size(); i++) { // 방에 입장한 유저수 만큼 반복
 						for(int j = 0; j < myRoom.player.size(); j++) { // 플레이어의 수 만큼 플레이어의 닉네임에 해당하는 인코딩 imgString을 전달
 							myRoom.ccu.get(i).dos.writeUTF(addPImgTag + "//" + tmpVector.get(j));
 							// 플레이어는 입장한 순서대로임 즉 k = 1이면 첫번째 플레이어
 						}
 					}
-					
+
 					String p1NN = "플레이어1";
 					String p2NN = "플레이어2";
 					if(myRoom.player.size() == 1) {
@@ -398,7 +398,7 @@ class CCUser extends Thread {
 						p1NN = myRoom.player.get(0).nickname;
 						p2NN = myRoom.player.get(1).nickname;
 					}
-							
+
 					for(int i = 0; i < myRoom.ccu.size(); i++) { // 방에 입장한 모든 유저에게
 						myRoom.ccu.get(i).dos.writeUTF(setPImgTag + "//" + p1NN + "//" + p2NN);
 					}
@@ -435,20 +435,20 @@ class CCUser extends Thread {
                                 sendWait(roomInfo());
                                 sendRoom(roomUser());
                                 sendRoom(roomObjv());
-                                
-                                // 플레이어 수만큼 이미지Str 추출 
+
+                                // 플레이어 수만큼 이미지Str 추출
 								Vector<String> tmpVector = new Vector<>();
 								for(int j = 0; j < myRoom.player.size(); j++) {
 									tmpVector.add(db.viewImg2(myRoom.player.get(j).nickname));
 								}
-								
+
 								for(int j = 0; j < myRoom.ccu.size(); j++) { // 방에 입장한 모든 유저에게
 									for(int k = 0; k < myRoom.player.size(); k++) { // 플레이어의 수 만큼 플레이어의 닉네임에 해당하는 인코딩 imgString을 전달
 										myRoom.ccu.get(j).dos.writeUTF(addPImgTag + "//" + tmpVector.get(k));
 										// 플레이어는 입장한 순서대로임 즉 k = 1이면 첫번째 플레이어
 									}
 								}
-								
+
 								String p1NN = "플레이어1";
 								String p2NN = "플레이어2";
 								if(myRoom.player.size() == 1) {
@@ -457,7 +457,7 @@ class CCUser extends Thread {
 									p1NN = myRoom.player.get(0).nickname;
 									p2NN = myRoom.player.get(1).nickname;
 								}
-								
+
 								for(int j = 0; j < myRoom.ccu.size(); j++) { // 방에 입장한 모든 유저에게
 									myRoom.ccu.get(j).dos.writeUTF(setPImgTag + "//" + p1NN + "//" + p2NN);
 								}
@@ -473,7 +473,7 @@ class CCUser extends Thread {
                         }
                     }
                 }
-                
+
                 /* 방 관전 */
 				else if (m[0].equals(oroomTag)) { // m[1]은 방이름
 					for (int i = 0; i < room.size(); i++) { // 생성된 방의 개수만큼 반복
@@ -491,13 +491,13 @@ class CCUser extends Thread {
 								sendWait(roomInfo()); // 대기실 접속 인원에 방 목록을 전송
 								sendRoom(roomUser()); // 방에 입장한 인원에 방 플레이어 목록을 전송
 								sendRoom(roomObjv()); // 방에 입장한 인원에 방 관전자 목록을 전송
-								
-								// 플레이어 수만큼 이미지Str 추출 
+
+								// 플레이어 수만큼 이미지Str 추출
 								Vector<String> tmpVector = new Vector<>();
 								for(int j = 0; j < myRoom.player.size(); j++) {
 									tmpVector.add(db.viewImg2(myRoom.player.get(j).nickname));
 								}
-								
+
 								for(int j = 0; j < myRoom.ccu.size(); j++) { // 방에 입장한 모든 유저에게
 									for(int k = 0; k < myRoom.player.size(); k++) { // 플레이어의 수 만큼 플레이어의 닉네임에 해당하는 인코딩 imgString을 전달
 										myRoom.ccu.get(j).dos.writeUTF(addPImgTag + "//" + tmpVector.get(k));
@@ -508,7 +508,7 @@ class CCUser extends Thread {
 								dos.writeUTF(oroomTag + "//OKAY//" + m[1]);
 								System.out.println("[Server] " + nickname + " : 방 '" + m[1] + "'에 입장");
 								System.out.println("[Server] 관전자로 입장");
-								
+
 								String p1NN = "플레이어1";
 								String p2NN = "플레이어2";
 								if(myRoom.player.size() == 1) {
@@ -517,7 +517,7 @@ class CCUser extends Thread {
 									p1NN = myRoom.player.get(0).nickname;
 									p2NN = myRoom.player.get(1).nickname;
 								}
-								
+
 								for(int j = 0; j < myRoom.ccu.size(); j++) { // 방에 입장한 모든 유저에게
 									myRoom.ccu.get(j).dos.writeUTF(setPImgTag + "//" + p1NN + "//" + p2NN);
 								}
@@ -528,7 +528,7 @@ class CCUser extends Thread {
 						}
 					}
 				}
-                
+
                 /* 방 퇴장 */
                 else if (m[0].equals(rexitTag)) {
                 	if (m[1].equals("guser")) {
@@ -544,9 +544,9 @@ class CCUser extends Thread {
                         myRoom.count--; // myRoom의 인원수 하나 삭제
                         wuser.add(this); // 대기실 접속 인원에 클라이언트 추가
                     }
-                	
+
                     System.out.println("[Server] " + nickname + " : 방 '" + myRoom.title + "' 퇴장");
-                    
+
                     if (myRoom.count == 0) { // myRoom의 인원수가 0이면 myRoom을 room 배열에서 삭제
                         room.remove(myRoom);
                     }
@@ -603,17 +603,17 @@ class CCUser extends Thread {
                 	System.out.println("x : " + m[1] + "y : " + m[2]);
                     recordBlackOmok(m[1], m[2]);
                     dos.writeUTF(omokBlackMsgTag + "//" + myRoom.romokblackmsg + "//");
-                    
+
                 }
-                
+
                 /* 오목 위치 */
                 else if (m[0].equals(omokWhiteMsgTag)) {
                 	System.out.println("x : " + m[1] + "y : " + m[2]);
                     recordWhiteOmok(m[1], m[2]);
                 	dos.writeUTF(omokWhiteMsgTag + "//" + myRoom.romokwhitemsg + "//");
-                    
+
                 }
-                
+
                 /* 관전자 오목 위치 저장 */
                 else if (m[0].equals(spectatorXYTag)) {
                 	String black = myRoom.romokblackmsg;
@@ -734,11 +734,11 @@ class CCUser extends Thread {
         }
         return msg;
     }
-    
+
     /* 클라이언트가 입장한 방의 인원을 조회 */
 	String roomObjv() {
 		String msg = uroomoTag + "//";
-		
+
 		if(myRoom.obj.size() < 1) {
 			msg = msg + "FAIL";
 		}else {
@@ -746,7 +746,7 @@ class CCUser extends Thread {
 				msg = msg + myRoom.obj.get(i).nickname + "@";
 			}
 		}
-		
+
 		return msg;
 	}
 

@@ -10,12 +10,12 @@ public class Room {
     int count = 0;
     int pcount = 0; // 플레이어 수
     int ocount = 0; // 관전자 수
-    
+
     String rmsg = "."; // 채팅 내역
     String romok = "."; // 오목 내역
     String romokblackmsg = ""; // 오목 위치 내역
     String romokwhitemsg = ""; // 오목 위치 내역
-    
+
     Room() {    //Room 객체 생성 시 접속(입장)한 클라이언트 객체에 대한 정보를 Room에 저장한다.
 
         ccu = new Vector<>();

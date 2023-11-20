@@ -8,7 +8,7 @@ import java.util.Base64;
  * SHA-256 해싱을 사용하여 비밀번호를 안전하게 저장
  */
 public class PasswordUtil {
-    
+
     /**
      * 비밀번호를 SHA-256으로 해싱
      * @param password 원본 비밀번호
@@ -24,7 +24,7 @@ public class PasswordUtil {
             return password; // 해싱 실패 시 원본 반환 (fallback)
         }
     }
-    
+
     /**
      * 비밀번호 검증
      * @param inputPassword 입력된 비밀번호

@@ -51,7 +51,7 @@ public class InfoFrame extends JFrame {
 		nicknameL.setPreferredSize(new Dimension(40, 30));
 		emailL.setPreferredSize(new Dimension(40, 30));
 		addressL.setPreferredSize(new Dimension(40, 30));
-		
+
 		/* TextField 크기 작업 */
 		name.setPreferredSize(new Dimension(200, 30));
 		nickname.setPreferredSize(new Dimension(200, 30));
@@ -80,7 +80,7 @@ public class InfoFrame extends JFrame {
 
 		panel.add(emailL);
 		panel.add(email);
-		
+
 		panel.add(addressL);
 		panel.add(address);
 

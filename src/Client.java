@@ -210,7 +210,7 @@ class MessageListener extends Thread {
                         client.sendMsg(chSIdTag + "//" + client.getId());
                     }
                 }
-                
+
                 /* id 찾기 */
 				if (m[0].equals(fidTag)) {
 					if (!m[1].equals("FAIL")) {
@@ -295,7 +295,7 @@ class MessageListener extends Thread {
                         viewInfo(m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8], m[9], m[10]);
                     }
                 }
-                
+
                 /* 회원정보 조회(이미지) */
 				else if (m[0].equals(viewImgTag)) {
 					if (m[1].equals("회원정보")) {
@@ -343,16 +343,16 @@ class MessageListener extends Thread {
                 else if (m[0].equals(eroomTag)) {
                     enterRoom(m[1]);
                 }
-                
+
                 else if (m[0].equals(addPImgTag)) {
 					imgStrV.add(m[1]); // m[1]은 플레이어의 imgString 벡터에 담는 작업
 				}
-				
+
 				else if (m[0].equals(setPImgTag)) {
-					viewPInfo(); // 이미지를 디코딩해서 imgByteV<ImageIcon>에 담음	
-					
+					viewPInfo(); // 이미지를 디코딩해서 imgByteV<ImageIcon>에 담음
+
 					if(imgByteV.size() == 1) {
-						
+
 						ImageIcon newIcon = new ImageIcon();
 						Image scaledImage = imgByteV.get(0).getImage().getScaledInstance(client.gf.pimgL.getWidth(),
 								client.gf.pimgL.getHeight(), Image.SCALE_SMOOTH);
@@ -360,12 +360,12 @@ class MessageListener extends Thread {
 						client.gf.pimgL.setIcon(newIcon);
 						// 닉네임도 표시
 						client.gf.pL1.setText(m[1]);
-						
+
 						@SuppressWarnings("unused")
 						String tmp = m[2];
 					}
 					else if (imgByteV.size() == 2) {
-						
+
 						ImageIcon newIcon = new ImageIcon();
 						Image scaledImage = imgByteV.get(0).getImage().getScaledInstance(client.gf.pimgL.getWidth(),
 								client.gf.pimgL.getHeight(), Image.SCALE_SMOOTH);
@@ -373,7 +373,7 @@ class MessageListener extends Thread {
 						client.gf.pimgL.setIcon(newIcon);
 						// 닉네임도 표시
 						client.gf.pL1.setText(m[1]);
-						
+
 						ImageIcon newIcon2 = new ImageIcon();
 						Image scaledImage2 = imgByteV.get(1).getImage().getScaledInstance(client.gf.pimgL2.getWidth(),
 								client.gf.pimgL2.getHeight(), Image.SCALE_SMOOTH);
@@ -402,28 +402,28 @@ class MessageListener extends Thread {
                 else if (m[0].equals(omokTag)) {
                     inputOmok(m[1], m[2], m[3]);
                 }
-                
+
                 else if (m[0].equals(omokBlackMsgTag)) {
                 	String[] omokBlack = m[1].split(":");
                 	omokSpectatorBlack(omokBlack);
                 }
-                
+
                 else if (m[0].equals(omokWhiteMsgTag)) {
                 	String[] omokWhite = m[1].split(":");
                 	omokSpectatorWhite(omokWhite);
                 }
-                
+
                 /* 관전자 돌 위치 */
                 else if (m[0].equals(spectatorXYTag)) {
                 	if (m[1].equals("") || m[1] != null) {
                 		String[] omokBlack = m[1].split(":");
                 		omokSpectatorBlack(omokBlack);
                 	}
-                	
+
                 	if (m[2].equals("") || m[2] != null) {
                 		String[] omokWhite = m[2].split(":");
                 		omokSpectatorWhite(omokWhite);
-                	}                	
+                	}
                 }
 
                 /* 패배 */
@@ -549,7 +549,7 @@ class MessageListener extends Thread {
             client.af.model.fireTableDataChanged();
         }
     }
-    
+
     /* 내 정보를 확인하는 메소드 */
 	void viewMyInfo(String _m1, String _encodedImage) { // _m1은 이름, 닉네임, 이메일
 		String uInfo[] = _m1.split(",");
@@ -667,7 +667,7 @@ class MessageListener extends Thread {
             System.out.println("[Client] 방 입장 실패");
             JOptionPane.showMessageDialog(null, "이미 2명이 찬 방이므로 입장할 수 없습니다", "방입장", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         clearChatInputField();
     }
 
@@ -703,14 +703,14 @@ class MessageListener extends Thread {
             } else if (userLength > 2) {
             	client.gf.userList.setListData(new String[] { user[0] }); // 첫 번째 값으로 userList 설정
                 client.gf.userList.setListData(new String[] { user[1] }); // 두 번째 값으로 userList2 설정
-                
+
                 for (int i = 2; i < userLength; i++) {
                 	client.gf.spectatorList.setListData(new String[] {user[i] });
                 }
             }
         }
     }
-    
+
 	/* 방 인원 목록을 출력하는 메소드 */
 	void roomObjv(String _m) {
 		if(_m.equals("FAIL")) {
@@ -788,7 +788,7 @@ class MessageListener extends Thread {
             JOptionPane.showMessageDialog(null, "관전자이므로 전적 반영을 하지 않습니다.", "전적반영", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
     void cleanGF(String _msg) {
 		if(_msg.equals("0")) {
 			client.gf.pL1.setText("플레이어1");
@@ -823,18 +823,18 @@ class MessageListener extends Thread {
         }
         return resultList;
     }
-    
+
     /* 방을 나가면 채팅 초기화 */
     void clearChatInputField() {
         client.gf.chatInputField.setText("");
         client.gf.chatTextPane.setText("");  // 이 부분을 추가하여 채팅 기록 초기화
     }
-    
+
     void omokSpectatorBlack(String[] b) {
     	client.gf.bd = b;
     	client.gf.drawdol(client.gf.getGraphics(), true);
     }
-    
+
     void omokSpectatorWhite(String[] w) {
     	client.gf.wd = w;
     	client.gf.drawdol(client.gf.getGraphics(), true);

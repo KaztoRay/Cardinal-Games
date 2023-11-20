@@ -345,8 +345,8 @@ public class Database {
 		}
 		return msg;
 	}
-	
-	/* 데이터 베이스에 저장된 img를 String 형태로 전송하는 메소드 */ 
+
+	/* 데이터 베이스에 저장된 img를 String 형태로 전송하는 메소드 */
 	String viewImg2(String _nickname) {
 		String nickname = _nickname;
 		String encodedImage = ""; // 인코딩이미지
@@ -360,7 +360,7 @@ public class Database {
 			if(result.next()) {
 				id = result.getString("id");
 			}
-			
+
 			String imgviewStr = "SELECT image_data FROM image_table WHERE id = ?";
 			pstmt = con.prepareStatement(imgviewStr);
 			pstmt.setString(1, id);
@@ -637,25 +637,25 @@ public class Database {
         }
         return user;
     }
-    
+
     ArrayList<String> searchUser(String su) {
     	ArrayList<String> searchUsers = new ArrayList();
-    	
+
     	try {
     		String searchUserStr = "SELECT id FROM member WHERE id LIKE ?";
     		pstmt = con.prepareStatement(searchUserStr);
     		pstmt.setString(1, su + "%");
     		ResultSet rs = pstmt.executeQuery();
-    		
+
     		while(rs.next()) {
     			searchUsers.add(rs.getString("id"));
     		}
-    		
+
     		System.out.println("[Client] 유저 검색 성공");
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	
+
     	return searchUsers;
     }
 }

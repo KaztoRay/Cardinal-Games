@@ -51,22 +51,22 @@ public class GameFrame extends JFrame {
      *
      */
     private static final long serialVersionUID = 1L;
-    
+
     boolean isSpectator = false; // 관전자 여부
     boolean gameEnd = false; // 게임 종료 여부
     boolean start = false;
-    
+
     // 게임 타이머
     int blackTimeLeft = 600; // 10분 (초)
     int whiteTimeLeft = 600;
     boolean isBlackTurn = true;
     Timer gameTimer;
     JLabel timerLabel = new JLabel("⏱ 10:00 / 10:00");
-    
+
     // 마지막 돌 위치 표시
     int lastX = -1, lastY = -1;
     int moveCount = 0;
-    
+
     JTextPane chatTextPane = new JTextPane();
     JTextField chatInputField;
 
@@ -172,7 +172,7 @@ public class GameFrame extends JFrame {
     JPanel basePanel = new JPanel(new BorderLayout());
     JPanel centerPanel = new JPanel();
     JPanel eastPanel = new JPanel();
-    
+
     /* List */
     JList<String> userList = new JList<String>();
 
@@ -187,7 +187,7 @@ public class GameFrame extends JFrame {
     JLabel enableL = new JLabel();
     JLabel pimgL = new JLabel();
     JLabel pimgL2 = new JLabel();
-    
+
     Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 
     /* Button */
@@ -209,7 +209,7 @@ public class GameFrame extends JFrame {
     boolean enable = false; // 돌을 둘 수 있는지 여부
     String[] bd = new String[0];
     String[] wd = new String[0];
-    
+
     Client c = null;
 
     final String searchTag = "SEARCH"; // 전적 조회 기능 태그
@@ -228,8 +228,8 @@ public class GameFrame extends JFrame {
         c = _c;
 
         icon = null; // 배경 이미지는 선택 사항
-    
-        // JTextPane 초기화      
+
+        // JTextPane 초기화
         chatTextPane = new JTextPane() {
             public void paintComponent(Graphics g) {
                 if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
@@ -237,17 +237,17 @@ public class GameFrame extends JFrame {
                 super.paintComponent(g);
             }
         };
-        
+
         chatTextPane.setEditable(false);
         chatTextPane.setBackground(Color.cyan);
         chatTextPane.setContentType("text/html"); // HTML을 지원하도록 설정
-        
+
         JScrollPane chatScrollPane1 = new JScrollPane(chatTextPane);
         chatScrollPane1.setPreferredSize(new Dimension(235, 100));
 
         // 스크롤을 항상 아래로 이동시키는 코드
         chatScrollPane1.getVerticalScrollBar().setValue(chatScrollPane1.getVerticalScrollBar().getMaximum());
-        
+
         chatInputField = new JTextField() {
             public void paintComponent(Graphics g) {
                 if (icon != null && icon.getImage() != null) g.drawImage(icon.getImage(), 0, 0, null);
@@ -256,22 +256,22 @@ public class GameFrame extends JFrame {
             }
         };
         chatInputField.setBackground(Color.cyan);
-        
+
         // JTextField 초기화
         chatInputField = new JTextField();
         chatInputField.setPreferredSize(new Dimension(235, 30));
-        
+
         // 관전자 리스트 크기 및 위치 설정
         spectatorList.setPreferredSize(new Dimension(120, 50));
         spectatorListL.setPreferredSize(new Dimension(105, 20));
         spectatorListL.setHorizontalAlignment(JLabel.CENTER);
-        
+
         JScrollPane spectatorScrollPanel = new JScrollPane(spectatorList);
         spectatorScrollPanel.setPreferredSize(new Dimension(235, 50));
 
         /* List 크기 작업 */
         userList.setPreferredSize(new Dimension(120, 50));
-        
+
         /* Label 크기 작업 */
         pL1.setPreferredSize(new Dimension(45, 20));
 		pL1.setHorizontalAlignment(JLabel.LEFT);
@@ -290,7 +290,7 @@ public class GameFrame extends JFrame {
         enableL.setForeground(Color.RED);
     JLabel moveCountLabel = new JLabel("수순: 0");
         la3.setPreferredSize(new Dimension(250, 25));
-        
+
         /* Button 크기 작업 */
         searchBtn.setPreferredSize(new Dimension(235, 30));
         loseBtn.setPreferredSize(new Dimension(235, 30));
@@ -307,7 +307,7 @@ public class GameFrame extends JFrame {
         eastPanel.setLayout(new FlowLayout());
 
         centerPanel.setBackground(new Color(206, 167, 61));
- 
+
         basePanel.add(centerPanel, BorderLayout.CENTER);
         basePanel.add(eastPanel, BorderLayout.EAST);
 
@@ -317,12 +317,12 @@ public class GameFrame extends JFrame {
         eastPanel.add(pimgL2);
         eastPanel.add(userListL);
         eastPanel.add(spectatorListL);
-        eastPanel.add(userList);       
+        eastPanel.add(userList);
         eastPanel.add(spectatorList);
         eastPanel.add(la2);
         eastPanel.add(searchBtn);
         eastPanel.add(enableL);
-        
+
         // 타이머 라벨
         timerLabel.setPreferredSize(new Dimension(235, 25));
         timerLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -331,7 +331,7 @@ public class GameFrame extends JFrame {
         moveCountLabel.setPreferredSize(new Dimension(235, 20));
         moveCountLabel.setHorizontalAlignment(JLabel.CENTER);
         eastPanel.add(moveCountLabel);
-        
+
         // 게임 타이머 초기화
         gameTimer = new Timer(1000, e -> {
             if (enable && !gameEnd) { // 내 턴일 때만 시간 감소
@@ -371,7 +371,7 @@ public class GameFrame extends JFrame {
         rematchBtn.setPreferredSize(new Dimension(235, 30));
         rematchBtn.setEnabled(false); // 게임 종료 후에만 활성화
         eastPanel.add(rematchBtn);
-        
+
         /* Button 이벤트 리스너 추가 */
         ButtonListener bl = new ButtonListener();
         rematchBtn.addActionListener(bl);
@@ -417,7 +417,7 @@ public class GameFrame extends JFrame {
             }
 
         });
-        
+
         /* Mouse 이벤트 추가 */
 		spectatorList.addMouseListener(new MouseListener() {
 			@Override
@@ -446,7 +446,7 @@ public class GameFrame extends JFrame {
         setResizable(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        
+
     }
 
     @Override
@@ -454,7 +454,7 @@ public class GameFrame extends JFrame {
         super.paintComponents(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
+
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(1.0f));
 
@@ -462,7 +462,7 @@ public class GameFrame extends JFrame {
         	 g2d.drawLine(35, i * 35 + 20, 35 * 20, i * 35 + 20); // 가로 줄 그리기
         	 g2d.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
         }
-        
+
         // 화점 (star points) 그리기
         int[] starPoints = {4, 10, 16};
         for (int x : starPoints) {
@@ -472,7 +472,7 @@ public class GameFrame extends JFrame {
         }
 
         drawdol(g2d); // 돌 그리기
-        
+
         if (isSpectator) {
         	c.sendMsg(spectatorXYTag + "//");
             drawdol(g, true); // 관전자인 경우에만 돌 그리기
@@ -511,15 +511,15 @@ public class GameFrame extends JFrame {
     	    g2d.setStroke(new BasicStroke(1.0f));
     	}
     }
-    
+
     void drawdol(Graphics g, boolean isSpectator) {
     	int[] blackDol = new int[bd.length * 2 + 2];
     	int[] whiteDol = new int[wd.length * 2 + 2];
-    	
+
     	for (int i = 0; i < bd.length; i++) {
     	    System.out.println("bd[" + i + "]: " + bd[i]);
     	}
-    	
+
     	// bd 배열의 값들을 blackDol 배열에 복사
     	for (int i = 0; i < bd.length; i++) {
     	    String[] parts = bd[i].split("@@");
@@ -533,7 +533,7 @@ public class GameFrame extends JFrame {
     	    whiteDol[i * 2] = Integer.parseInt(parts[0]); // 첫 번째 값
     	    whiteDol[i * 2 + 1] = Integer.parseInt(parts[1]); // 두 번째 값
     	}
-    	
+
     	for (int i = 0; i < blackDol.length; i += 2) {
             int x = blackDol[i];
             int y = blackDol[i + 1];
@@ -570,7 +570,7 @@ public class GameFrame extends JFrame {
                 c.sendMsg(msg);
                 chatInputField.setText("");
             }
-            
+
             /* 전적검색 버튼 이벤트 */
             if (b.getText().equals("전적검색")) {
                 if (selUser != null) { // selUser가 null이 아니면 서버에 "태그//닉네임" 형태의 메시지를 전송
@@ -592,7 +592,7 @@ public class GameFrame extends JFrame {
                     JOptionPane.showMessageDialog(null, "게임 플레이어만 기권할 수 있습니다", "기권 실패", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
+
             /* 재대국 버튼 이벤트 */
             else if (b.getText().equals("재대국")) {
                 remove(); // 보드 초기화
@@ -616,7 +616,7 @@ public class GameFrame extends JFrame {
                 repaint();
                 JOptionPane.showMessageDialog(null, "재대국을 시작합니다!", "재대국", JOptionPane.INFORMATION_MESSAGE);
             }
-            
+
             /* 나가기 버튼 이벤트 */
             else if (b.getText().equals("나가기")) {
             	if(!isSpectator) {
@@ -634,7 +634,7 @@ public class GameFrame extends JFrame {
             }
         }
     }
-    
+
     // chatInputField에 대한 ActionListener 추가
     class ChatInputFieldListener implements ActionListener {
         @Override
@@ -685,7 +685,7 @@ public class GameFrame extends JFrame {
                 col = 2;
                 c.sendMsg(omokWhiteMsgTag + "//" + x + "//" + y + "//");
             }
-            
+
             // 만약 플레이어가 돌을 두었다면 메시지를 서버에 전송
             if (!isSpectator) {
             	String msg = ("omokMsgTag//" + x + "@@" + y);
@@ -758,10 +758,10 @@ public class GameFrame extends JFrame {
             ;
         return i;
     }
-    
+
     // client.cf.appendMsg 메소드 내에서도 SwingUtilities.invokeLater 사용
     public void appendMsg(String msg, String owner) {
-        SwingUtilities.invokeLater(() -> {       	
+        SwingUtilities.invokeLater(() -> {
             if (owner.equals(c.gf.getNickname())) {
             	appendRightAligned("나", Color.BLACK);
             	appendRightAligned(msg + "\n", Color.BLUE);
@@ -771,7 +771,7 @@ public class GameFrame extends JFrame {
             }
         });
     }
-    
+
     // 채팅을 받아서 메세지로 붙여보내는 메소드
     public void appendMsg2(String msg) {
         SwingUtilities.invokeLater(() -> {
@@ -790,7 +790,7 @@ public class GameFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             HTMLDocument doc = (HTMLDocument) chatTextPane.getStyledDocument();
             Element root = doc.getDefaultRootElement();
-            
+
             // 스타일 추가
             SimpleAttributeSet style = new SimpleAttributeSet();
             StyleConstants.setForeground(style, textColor);
@@ -808,7 +808,7 @@ public class GameFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             HTMLDocument doc = (HTMLDocument) chatTextPane.getStyledDocument();
             Element root = doc.getDefaultRootElement();
-            
+
             // 스타일 추가
             SimpleAttributeSet style = new SimpleAttributeSet();
             StyleConstants.setForeground(style, textColor);
@@ -830,28 +830,28 @@ public class GameFrame extends JFrame {
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-    
+
     // 타이머 시작
     public void startTimer() {
         if (gameTimer != null && !gameTimer.isRunning()) {
             gameTimer.start();
         }
     }
-    
+
     // 타이머 정지
     public void stopTimer() {
         if (gameTimer != null) {
             gameTimer.stop();
         }
     }
-    
+
     // 타이머 라벨 업데이트
     private void updateTimerLabel() {
         String blackTime = String.format("%d:%02d", blackTimeLeft / 60, blackTimeLeft % 60);
         String whiteTime = String.format("%d:%02d", whiteTimeLeft / 60, whiteTimeLeft % 60);
         timerLabel.setText("⚫ " + blackTime + " / ⚪ " + whiteTime);
     }
-    
+
     // 타이머 리셋
     public void resetTimer() {
         blackTimeLeft = 600;
