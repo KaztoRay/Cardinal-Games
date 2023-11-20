@@ -92,3 +92,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-17 #3] 경계값 체크
 // [2023-11-19 #3] 이벤트 리스너 분리
 // [2023-11-19 #8] 다이얼로그 메시지 수정
+// [2023-11-20 #10] UI 응답성 개선
