@@ -111,3 +111,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-11-18 #10] 트랜잭션 처리
 // [2023-11-19 #5] 에러 메시지 한글화
 // [2023-11-20 #3] 버퍼 크기 최적화
+// [2023-11-21 #1] 문자열 연결 StringBuilder 변환
