@@ -44,7 +44,22 @@ public class Client {
             // 서버 주소 설정 (기본: localhost:1257)
             String serverHost = System.getProperty("server.host", "localhost");
             int serverPort = Integer.parseInt(System.getProperty("server.port", "1257"));
-            client.mySocket = new Socket(serverHost, serverPort);
+            
+            // 서버 연결 재시도 (최대 3회)
+            int maxRetries = 3;
+            for (int retry = 1; retry <= maxRetries; retry++) {
+                try {
+                    client.mySocket = new Socket(serverHost, serverPort);
+                    break; // 연결 성공
+                } catch (java.net.ConnectException e) {
+                    if (retry < maxRetries) {
+                        System.out.println("[Client] 서버 연결 실패, " + (maxRetries - retry) + "회 재시도...");
+                        Thread.sleep(2000); // 2초 대기 후 재시도
+                    } else {
+                        throw e; // 마지막 시도에서도 실패
+                    }
+                }
+            }
             System.out.println("[Client] 서버 연결 성공");
 
             client.os = client.mySocket.getOutputStream();
