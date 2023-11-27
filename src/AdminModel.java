@@ -95,3 +95,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-20 #10] UI 응답성 개선
 // [2023-11-22 #9] 변수명 가독성 개선
 // [2023-11-23 #7] 로깅 추가
+// [2023-11-27 #5] 경계값 체크
