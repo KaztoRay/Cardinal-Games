@@ -97,3 +97,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-23 #7] 로깅 추가
 // [2023-11-27 #5] 경계값 체크
 // [2023-11-27 #11] 소켓 타임아웃 설정
+// [2023-11-29 #10] 문자열 연결 StringBuilder 변환
