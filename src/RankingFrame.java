@@ -91,3 +91,4 @@ public class RankingFrame extends JFrame {
 // [2023-11-27 #1] 로그 레벨 분류
 // [2023-11-27 #6] 로직 최적화
 // [2023-11-29 #7] 문자열 연결 StringBuilder 변환
+// [2023-11-29 #14] 인코딩 처리
