@@ -99,3 +99,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-27 #11] 소켓 타임아웃 설정
 // [2023-11-29 #10] 문자열 연결 StringBuilder 변환
 // [2023-11-30 #10] 예외 처리 강화
+// [2023-11-30 #13] 보드 렌더링 최적화
