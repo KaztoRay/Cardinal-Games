@@ -100,3 +100,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-11-29 #10] 문자열 연결 StringBuilder 변환
 // [2023-11-30 #10] 예외 처리 강화
 // [2023-11-30 #13] 보드 렌더링 최적화
+// [2023-12-01 #13] 승리 판정 엣지케이스 처리
