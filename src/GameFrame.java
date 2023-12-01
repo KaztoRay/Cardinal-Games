@@ -463,6 +463,15 @@ public class GameFrame extends JFrame {
         	 g2d.drawLine(i * 35, 55, i * 35, 35 * 20 + 20); // 세로 줄 그리기
         }
 
+        // 좌표 표시
+        g2d.setFont(new Font("Dialog", Font.PLAIN, 10));
+        g2d.setColor(new Color(100, 60, 20));
+        for (int i = 1; i <= 19; i++) {
+            g2d.drawString(String.valueOf(i), i * 35 - 3, 50); // 상단 숫자
+            g2d.drawString(String.valueOf((char)('A' + i - 1)), 15, i * 35 + 24); // 좌측 알파벳
+        }
+        g2d.setColor(Color.BLACK);
+        
         // 화점 (star points) 그리기
         int[] starPoints = {4, 10, 16};
         for (int x : starPoints) {
