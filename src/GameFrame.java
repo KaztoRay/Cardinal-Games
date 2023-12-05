@@ -66,6 +66,7 @@ public class GameFrame extends JFrame {
     // 마지막 돌 위치 표시
     int lastX = -1, lastY = -1;
     int moveCount = 0;
+    java.util.List<String> gameLog = new java.util.ArrayList<>(); // 기보 기록
 
     JTextPane chatTextPane = new JTextPane();
     JTextField chatInputField;
@@ -684,6 +685,7 @@ public class GameFrame extends JFrame {
             lastY = y;
             moveCount++;
             moveCountLabel.setText("수순: " + moveCount);
+            gameLog.add(moveCount + ". " + dc + " (" + (char)('A'+x) + "," + (y+1) + ")");
 
             if (dc.equals(blackTag)) { // 검정색 태그면 1
                 omok[y][x] = 1;
