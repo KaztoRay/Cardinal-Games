@@ -120,3 +120,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-11-27 #4] 리소스 해제 추가
 // [2023-11-30 #6] 다이얼로그 메시지 수정
 // [2023-12-03 #3] 커넥션 풀 기반 코드
+// [2023-12-05 #14] 승리 판정 엣지케이스 처리
