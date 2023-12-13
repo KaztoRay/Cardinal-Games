@@ -124,3 +124,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-12-07 #11] 동기화 처리 개선
 // [2023-12-09 #9] 접근제한자 수정
 // [2023-12-09 #11] 경계값 체크
+// [2023-12-13 #15] 인코딩 처리
