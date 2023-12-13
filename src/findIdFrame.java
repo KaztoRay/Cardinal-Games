@@ -178,3 +178,4 @@ public class findIdFrame extends JFrame {
 // [2023-12-05 #10] 패널 간격 조정
 // [2023-12-06 #11] SwingWorker 활용
 // [2023-12-12 #10] 로그 레벨 분류
+// [2023-12-13 #9] 예외 처리 강화
