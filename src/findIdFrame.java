@@ -179,3 +179,4 @@ public class findIdFrame extends JFrame {
 // [2023-12-06 #11] SwingWorker 활용
 // [2023-12-12 #10] 로그 레벨 분류
 // [2023-12-13 #9] 예외 처리 강화
+// [2023-12-14 #3] 이벤트 리스너 분리
