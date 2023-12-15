@@ -43,6 +43,8 @@ public class Server {
             // 클라이언트의 연결 요청을 상시 대기.
             while (true) {
                 Socket socket = server.ss.accept();
+                server.alluser.size();
+                System.out.println(timestamp() + " [Server] 새 클라이언트 접속 (현재 " + (server.alluser.size() + 1) + "명)");
                 CCUser c = new CCUser(socket, server); // 소켓과 서버를 넘겨 CCUser(접속한 유저 관리)객체 생성
 
                 c.start(); // CCUser 스레드 시작
