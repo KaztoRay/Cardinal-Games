@@ -128,3 +128,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-12-16 #1] 미사용 import 제거
 // [2023-12-16 #3] 예외 처리 강화
 // [2023-12-16 #6] 변수명 가독성 개선
+// [2023-12-18 #6] 보드 렌더링 최적화
