@@ -110,3 +110,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-12-12 #7] 변수명 가독성 개선
 // [2023-12-16 #4] 승리 판정 엣지케이스 처리
 // [2023-12-16 #12] null 체크 추가
+// [2023-12-19 #4] 입력값 검증 추가
