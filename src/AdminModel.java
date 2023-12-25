@@ -112,3 +112,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-12-16 #12] null 체크 추가
 // [2023-12-19 #4] 입력값 검증 추가
 // [2023-12-23 #7] 접근제한자 수정
+// [2023-12-25 #11] 트랜잭션 처리
