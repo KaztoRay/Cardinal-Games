@@ -5,7 +5,12 @@ import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
 
-//서버와의 연결과 각 인터페이스를 관리하는 클래스.
+/**
+ * Cardinal Games - 온라인 오목 게임 클라이언트
+ * 서버와의 연결과 각 인터페이스를 관리하는 클래스.
+ * @version 1.0
+ * @since 2023.09
+ */
 public class Client {
 
     private String id = "";

@@ -5,7 +5,12 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-//클라이언트의 연결 요청 및 입출력을 상시 관리하는 클래스.
+/**
+ * Cardinal Games - 온라인 오목 게임 서버
+ * 클라이언트의 연결 요청 및 입출력을 상시 관리하는 클래스.
+ * @version 1.0
+ * @since 2023.09
+ */
 public class Server {
     ServerSocket ss = null;
 
