@@ -118,3 +118,4 @@ public class AdminModel extends AbstractTableModel {
 // [2023-12-26 #4] 로그 레벨 분류
 // [2023-12-26 #6] 색상 코드 정리
 // [2023-12-29 #9] null 체크 추가
+// [2023-12-30 #1] SwingWorker 활용
