@@ -131,3 +131,4 @@ public class ChatRoomFrame extends JFrame implements ActionListener {
 // [2023-12-18 #6] 보드 렌더링 최적화
 // [2023-12-18 #7] 로깅 추가
 // [2023-12-28 #1] 이벤트 리스너 분리
+// [2023-12-31 #14] 테두리 스타일 변경
